@@ -2,6 +2,8 @@ language: python
 
 jobs:
   include:
+    - stage: "Build"
+      script: pip install -r requirements.txt
     - stage: "Tests"                # naming the Tests stage
       name: "Unit Tests"            # names the first Tests stage job
       script: python tests.py
