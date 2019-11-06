@@ -1,2 +1,4 @@
 pytest
 pylint
+iexfinance
+mysql-connector-python
