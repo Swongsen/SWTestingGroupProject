@@ -6,4 +6,8 @@ jobs:
       script: pip install -r requirements.txt
     - stage: "Tests"                # naming the Tests stage
       name: "Unit Tests"            # names the first Tests stage job
-      script: python tests.py
+      script: pytest tests.py
+    - stage: "Linter"
+      name: "Linting"
+      script: pylint tests.py
+      
