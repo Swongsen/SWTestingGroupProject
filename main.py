@@ -1,10 +1,24 @@
 from iexfinance.stocks import Stock
 import pandas as pd
+import http.client
+import json
 
 # get latest price when given ticker
 def getLatestPrice(ticker):
-    stock = Stock(ticker, token="pk_f5f73c6bf9c44432be834bb284253a11")
-    latest_price = stock.get_quote()["latestPrice"]
-    return latest_price
+    # Request: Market Quotes (https://sandbox.tradier.com/v1/markets/quotes?symbols=spy)
+    connection = http.client.HTTPSConnection('sandbox.tradier.com', 443, timeout = 30)
+    # Headers
+    headers = {"Accept":"application/json",
+            "Authorization":"Bearer A5dHAZqYNutmBOjIzppnWIsAwYw4"}
+    # Send synchronously
+    connection.request('GET', '/v1/markets/quotes?symbols={}'.format(ticker), None, headers)
+    try:
+        response = connection.getresponse()
+        content = response.read()
+        # Success
+        return json.loads(content)["quotes"]["quote"]["last"]
+    except http.client.HTTPException as e:
+        # Exception
+        print('Exception during request')
 
-print(getLatestPrice("FB"))
+print(getLatestPrice("AAPL"))
