@@ -9,5 +9,4 @@ jobs:
       script: pytest tests.py
     - stage: "Linter"
       name: "Linting"
-      script: pylint tests.py
-      
+      script: pylint main.py --exit-zero
