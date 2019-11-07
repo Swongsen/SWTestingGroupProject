@@ -1,0 +1,30 @@
+<html>
+  <head>
+    <title>Online Banking System</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="static/bootstrap.min.css" rel="stylesheet" media="screen">
+  </head>
+  <body bgcolor = "#727070">
+    <div class="container">
+      <h1>OBS Team 1</h1>
+      <h1>Login</hl>
+      <br>
+      <form action="" method="POST">
+        <input type="text" placeholder="Username" name="username" value="{{
+          request.form.username }}">
+         <input type="password" placeholder="Password" name="password" value="{{
+          request.form.password }}">
+        <input class="btn btn-default" type="submit" value="Login">
+      </form>
+      {% if error %}
+        <p class="error"><strong>Error:</strong> {{ error }}
+      {% endif %}
+      <br>
+      <br>
+      <h2> Don't Have An Account? </h2>
+      <a href='/createaccount'>
+        <input type="button" value="Create Account"
+        </a>
+    </div>
+  </body>
+</html>
