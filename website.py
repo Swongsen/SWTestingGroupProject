@@ -2,12 +2,19 @@ from flask import Flask, render_template, request, redirect, url_for, session
 import pandas as pd
 
 website = Flask(__name__)
+
+website.secret_key = 'secretkey'
 # Makeshift login token
 token = 0
 
 @website.route("/login", methods=["GET", "POST"])
 def login():
     message = None
+
+    # If a user is already logged in, log them out
+    if(session.get('logged_in') == True):
+        session.pop('logged_in', None)
+
     if request.method == "POST":
         # Get the username and password from the request form
         user = request.form["username"]
@@ -19,7 +26,8 @@ def login():
         for index, row in user_data.iterrows():
             # If the username, password matches the username and password from the form
             if user == row["user"] and password == row["password"]:
-                token = 1
+                # Since there is match from users.csv, set the session to be logged in
+                session['logged_in'] = True
                 return redirect("/home")
             else:
                 message = "Invalid Credentials"
@@ -54,9 +62,13 @@ def create():
 
     return render_template("createaccount.html", message=message)
 
-@website.route("/home")
+@website.route("/home", methods=["GET", "POST"])
 def load():
-    return render_template('home.html')
+    # If not logged in, redirect back to login page
+    if not session.get('logged_in'):
+        return redirect("/login")
+    else:
+        return render_template("home.html")
 
 
 
