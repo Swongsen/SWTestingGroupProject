@@ -1,6 +1,6 @@
-users,password
-"admin","admin"
-"spencer","password"
-"alain","password"
-"georgia","password"
-"abhi","password"
+id,user,password
+0,admin,admin
+1,spencer,password
+2,alain,password
+3,georgia,password
+4,abhi,password

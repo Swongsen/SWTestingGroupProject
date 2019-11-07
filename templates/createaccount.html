@@ -1,10 +1,15 @@
 <html>
   <h1> Create Account </h1>
   <form action="" method="POST">
-    <input type="text" placeholder="Create Username" name="c_username" value="{{
-      request.form.c_username }}">
-      <input type="password" placeholder="Create Password" name="c_password" value="{{
-        request.form.c_password }}">
+    <input type="text" placeholder="Create Username" name="username" value="{{
+      request.form.username }}">
+      <input type="password" placeholder="Create Password" name="password" value="{{
+        request.form.password }}">
         <input class="btn btn-default" type="submit" value="Create Account">
+        <font color="Red">
+          {% if message %}
+            <p class="message"><strong>Message:</strong> {{ message }}
+          {% endif %}
+        </font>
   </form>
 </html>
