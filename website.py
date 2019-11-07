@@ -43,6 +43,10 @@ def create():
         user = request.form["username"]
         password = request.form["password"]
 
+        if(len(password) < 8):
+            message = "Password too short"
+            return render_template("createaccount.html", message=message)
+
         user_data = pd.read_csv("users.csv")
         user_data = user_data.set_index("id")
 
@@ -59,6 +63,7 @@ def create():
             user_data = user_data.append({"user":user, "password": password}, ignore_index=True)
             user_data.to_csv('users.csv', index_label = "id")
             message = "Account successfully created"
+            
 
     return render_template("createaccount.html", message=message)
 
