@@ -6,6 +6,9 @@ website = Flask(__name__)
 website.secret_key = 'secretkey'
 # Makeshift login token
 token = 0
+@website.route("/")
+def reroute():
+    return redirect("/login")
 
 @website.route("/login", methods=["GET", "POST"])
 def login():
@@ -63,7 +66,7 @@ def create():
             user_data = user_data.append({"user":user, "password": password}, ignore_index=True)
             user_data.to_csv('users.csv', index_label = "id")
             message = "Account successfully created"
-            
+
 
     return render_template("createaccount.html", message=message)
 
