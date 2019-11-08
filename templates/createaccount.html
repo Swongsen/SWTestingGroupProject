@@ -4,9 +4,12 @@
   <form action="" method="POST">
     <input type="text" placeholder="Create Username" name="username" value="{{
       request.form.username }}">
+      <br>
       <input type="password" placeholder="Create Password" name="password" value="{{
         request.form.password }}">
+        <br><br>
         <input class="btn btn-default" type="submit" value="Create Account">
+        <br>
         <font color="Red">
           {% if message %}
             <p class="message"><strong>Message:</strong> {{ message }}

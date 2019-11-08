@@ -1,31 +1,61 @@
 <html>
   <head>
+    <style>
+      body{
+        background-image: url("https://www.dailydot.com/wp-content/uploads/2019/06/stonks_meme-1024x512.jpg");
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: cover;
+      }
+      h1{
+        color: black;
+        font-family: "Verdana", Sans-serif
+      }
+      input{
+        color: black;
+        font-family: "Verdana", Sans-serif
+      }
+      strong{
+        color:red;
+        font-family: "Verdana", Sans-serif
+      }
+      p{
+        color:red;
+        font-family: "Verdana", Sans-serif
+      }
+      input{
+        color:black;
+        font-family: "Verdana", Sans-serif
+      }
+    </style>
     <title>Online Banking System</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="static/bootstrap.min.css" rel="stylesheet" media="screen">
   </head>
-  <body bgcolor = "#727070">
+  <body>
     <div class="container">
-      <h1>OBS Team 1</h1>
+      <h1 align=right>OBS Team 1</h1>
+      <center>
       <h1>Login</hl>
-      <br>
+      <br><br>
       <form action="" method="POST">
         <input type="text" placeholder="Username" name="username" value="{{
           request.form.username }}">
+          <br>
          <input type="password" placeholder="Password" name="password" value="{{
           request.form.password }}">
+          <br><br>
         <input class="btn btn-default" type="submit" value="Login">
       </form>
-      <font color="Red">
       {% if message %}
         <p class="message"><strong>Message:</strong> {{ message }}
       {% endif %}
-      </font>
       <br>
       <h1> Don't Have An Account? </h1>
       <a href='/createaccount'>
         <input type="button" value="Create Account">
         </a>
+      </center>
     </div>
   </body>
 </html>
