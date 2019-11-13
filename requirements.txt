@@ -1,5 +1,4 @@
 pytest
 pylint
-iexfinance
-mysql-connector-python
-flask-jwt
+mysql-python
+flask
