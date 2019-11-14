@@ -38,7 +38,7 @@ def createUser():
         # Use custom auth module to create account
         message = auth.createUser(session, request)
 
-    return render_template("createaccount.html", message=message)
+    return render_template("createuser.html", message=message)
 
 @webclient.route("/home", methods=["GET", "POST"])
 def load():
@@ -50,8 +50,11 @@ def load():
 
 @webclient.route("/addaccount", methods=["GET", "POST"])
 def addAccount():
-    obs.addAccount(session["token"], 2000)
-    return "Account created"
+    if not session.get('logged_in'):
+        return redirect("/login")
+    else:
+        obs.addAccount(session["token"], 2000)
+        return render_template("addaccount.html")
 
 @webclient.route("/logs/authentication", methods=["GET"])
 def viewAuthenticationLogs():
