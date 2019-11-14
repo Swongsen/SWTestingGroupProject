@@ -3,11 +3,12 @@ import http.client
 import json
 import MySQLdb
 
+# Config values, may use config file later
 ticker="AAPL"
 key = "A5dHAZqYNutmBOjIzppnWIsAwYw4"
 db_host = "35.237.245.229"
 db_user = "root"
-db_password = "admin"
+db_password = "cis4930"
 
 # get latest price when given ticker using tradier's example code
 def getLatestPrice(key=key, ticker=ticker):
@@ -26,4 +27,6 @@ def getLatestPrice(key=key, ticker=ticker):
         # Exception
         print('Exception during request')
 
+# Connects to database
 db = MySQLdb.connect(host=db_host,user=db_user,password=db_password)
+

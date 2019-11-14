@@ -3,6 +3,8 @@ import os
 
 user_data_path = os.path.dirname(os.path.abspath(__file__))+"\\users.csv"
 
+# logs a user in if authentication succeeds
+# returns a token and message if applicable
 def login(session, request):
     token = None
     message = None
@@ -26,6 +28,7 @@ def login(session, request):
     
     return token, message
 
+# creates a user
 def createAccount(session, request):
     # Get the username and password from the request form
     user = request.form["username"]
