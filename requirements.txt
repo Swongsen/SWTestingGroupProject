@@ -1,4 +1,4 @@
 pytest
 pylint
-mysql
+mysql-connector-python
 flask
