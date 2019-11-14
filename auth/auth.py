@@ -30,7 +30,7 @@ def login(session, request):
     return token, message
 
 # creates a user
-def createAccount(session, request):
+def createUser(session, request):
     # Get the username and password from the request form
     user = request.form["username"]
     password = request.form["password"]
