@@ -2,3 +2,4 @@ pytest
 pylint
 mysql-connector-python
 flask
+pandas
