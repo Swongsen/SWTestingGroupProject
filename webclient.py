@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for, session
 import pandas as pd
 from auth import auth
+from services import monitoring
 
 webclient = Flask(__name__)
 webclient.secret_key = "secretkey"
@@ -22,6 +23,8 @@ def login():
         session["token"], message = auth.login(session, request)
 
         if session.get("logged_in"):
+            # log, then redirect
+            monitoring.log("authentication", (session["token"], request.form["username"]))
             return redirect("/home")
 
     # If not already redirected to /home, then redirect back to login and print the error message
@@ -43,6 +46,10 @@ def load():
         return redirect("/login")
     else:
         return render_template("home.html")
+
+@webclient.route("/logs/authentication", methods=["GET"])
+def viewAuthenticationLogs():
+    return monitoring.viewAuthenticationLogs()
 
 if __name__ == "__main__":
     webclient.run()

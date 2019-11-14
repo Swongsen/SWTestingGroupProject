@@ -3,12 +3,18 @@ import http.client
 import json
 import MySQLdb
 
-# Config values, may use config file later
+# Config values
 ticker="AAPL"
 key = "A5dHAZqYNutmBOjIzppnWIsAwYw4"
 db_host = "35.237.245.229"
 db_user = "root"
 db_password = "cis4930"
+
+# Connects to database
+try:
+    db = MySQLdb.connect(host=db_host,user=db_user,password=db_password)
+except:
+    print("Could not connect to aapl database, is it up?")
 
 # get latest price when given ticker using tradier's example code
 def getLatestPrice(key=key, ticker=ticker):
@@ -26,7 +32,3 @@ def getLatestPrice(key=key, ticker=ticker):
     except http.client.HTTPException:
         # Exception
         print('Exception during request')
-
-# Connects to database
-db = MySQLdb.connect(host=db_host,user=db_user,password=db_password)
-
