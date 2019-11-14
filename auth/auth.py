@@ -4,8 +4,8 @@ import os
 user_data_path = os.path.dirname(os.path.abspath(__file__))+"\\users.csv"
 
 def login(session, request):
-    message = None
     token = None
+    message = None
     
     # Get the username and password from the request form
     user = request.form["username"]

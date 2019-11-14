@@ -4,7 +4,6 @@ from auth import auth
 
 webclient = Flask(__name__)
 webclient.secret_key = "secretkey"
-token = None
 
 @webclient.route("/")
 def reroute():
@@ -12,8 +11,6 @@ def reroute():
 
 @webclient.route("/login", methods=["GET", "POST"])
 def login():
-    # global token so that it actually changes when modified in this function
-    global token
     message = None
 
     # If a user is already logged in, log them out
@@ -22,7 +19,7 @@ def login():
 
     if request.method == "POST":
         # Use custom auth module to login
-        token, message = auth.login(session, request)
+        session["token"], message = auth.login(session, request)
 
         if session.get("logged_in"):
             return redirect("/home")
