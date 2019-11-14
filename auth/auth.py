@@ -1,12 +1,13 @@
 import pandas as pd
 import os
+import sys
 
 user_data_path = os.path.dirname(os.path.abspath(__file__))+"\\users.csv"
 
 def login(session, request):
     token = None
     message = None
-    
+
     # Get the username and password from the request form
     user = request.form["username"]
     password = request.form["password"]
@@ -23,7 +24,7 @@ def login(session, request):
             break
         else:
             message = "Invalid Credentials"
-    
+
     return token, message
 
 def createAccount(session, request):
