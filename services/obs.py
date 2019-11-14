@@ -8,11 +8,11 @@ cur.execute("USE accounts")
 
 """ ACCOUNT MANAGEMENT """
 # Add an account with starting $ for a user
-def addAccount(userID, starting_balance):
-    cur.execute("CREATE TABLE IF NOT EXISTS accounts(userid INTEGER NOT NULL, accountid INTEGER NOT NULL, funds DOUBLE NOT NULL, aapl INTEGER NOT NULL, fb INTEGER NOT NULL, nflx INTEGER NOT NULL, amzn INTEGER NOT NULL, created_at TEXT NOT NULL)")
+def addAccount(userID, accountname, starting_balance):
+    cur.execute("CREATE TABLE IF NOT EXISTS accounts(userid INTEGER NOT NULL, accountid INTEGER NOT NULL, accountname TEXT NOT NULL, funds DOUBLE NOT NULL, aapl INTEGER NOT NULL, fb INTEGER NOT NULL, nflx INTEGER NOT NULL, amzn INTEGER NOT NULL, created_at TEXT NOT NULL)")
     cur.execute("SELECT COUNT(*) FROM accounts")
     num_accounts = cur.fetchone()[0]
-    cur.execute("INSERT INTO accounts(userid, accountid, funds, aapl, fb, nflx, amzn, created_at) VALUES ({},{},{},0,0,0,0,NOW())".format(userID,num_accounts,starting_balance))
+    cur.execute("INSERT INTO accounts(userid, accountid, accountname, funds, aapl, fb, nflx, amzn, created_at) VALUES ({},{},{},{},0,0,0,0,NOW())".format(userID,num_accounts,accountname,starting_balance))
     return 1
 
 # View balance for a given account
@@ -39,6 +39,8 @@ def netWorth(user):
 
 """ DEBUG """
 def viewAccounts():
+    cur.execute("CREATE DATABASE IF NOT EXISTS accounts")
+    cur.execute("USE accounts")
     cur.execute("CREATE TABLE IF NOT EXISTS accounts(userid INTEGER NOT NULL, accountid INTEGER NOT NULL, funds DOUBLE NOT NULL, aapl INTEGER NOT NULL, fb INTEGER NOT NULL, nflx INTEGER NOT NULL, amzn INTEGER NOT NULL, created_at TEXT NOT NULL)")
     cur.execute("SELECT * FROM accounts")
     row_headers = [x[0] for x in cur.description]
