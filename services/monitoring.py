@@ -1,18 +1,8 @@
 import pandas as pd
-import MySQLdb
 from flask import jsonify
+from services import connect
 
-# Config values
-db_host = "34.73.169.74"
-db_user = "root"
-db_password = "cis4930"
-
-# Connects to database, set up cursor
-try:
-    db = MySQLdb.connect(host=db_host,user=db_user,password=db_password)
-except:
-    print("Could not connect to OBS database, is it up?")
-cur = db.cursor()
+cur = connect.cursor
 cur.execute("CREATE DATABASE IF NOT EXISTS logs")
 cur.execute("USE logs")
 
@@ -25,7 +15,7 @@ def log(table, information):
         cur.execute("INSERT INTO authentication(userid, username, created_at) VALUES ({},'{}',NOW())".format(information[0],information[1]))
     elif table == "transaction":
         return 1
-    elif table == "stock transaction":
+    elif table == "stocktransaction":
         return 1
     return 1
 
@@ -44,5 +34,5 @@ def viewAuthenticationLogs():
 def viewTransactionLogs():
     return 1
 
-def viewStockTransactions():
+def viewStockTransactionLogs():
     return 1

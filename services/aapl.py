@@ -1,20 +1,13 @@
 import pandas as pd
 import http.client
 import json
-import MySQLdb
+from services import connect
 
 # Config values
 ticker="AAPL"
 key = "A5dHAZqYNutmBOjIzppnWIsAwYw4"
-db_host = "35.237.245.229"
-db_user = "root"
-db_password = "cis4930"
 
-# Connects to database
-try:
-    db = MySQLdb.connect(host=db_host,user=db_user,password=db_password)
-except:
-    print("Could not connect to aapl database, is it up?")
+cur = connect.cursor
 
 # get latest price when given ticker using tradier's example code
 def getLatestPrice(key=key, ticker=ticker):

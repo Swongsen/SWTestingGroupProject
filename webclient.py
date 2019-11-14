@@ -51,5 +51,13 @@ def load():
 def viewAuthenticationLogs():
     return monitoring.viewAuthenticationLogs()
 
+@webclient.route("/logs/transaction", methods=["GET"])
+def viewTransactionLogs():
+    return monitoring.viewTransactionLogs()
+
+@webclient.route("/logs/stocktransaction", methods=["GET"])
+def viewStockTransactionLogs():
+    return monitoring.viewStockTransactionLogs()
+
 if __name__ == "__main__":
     webclient.run()

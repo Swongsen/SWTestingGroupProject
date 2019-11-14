@@ -1,5 +1,7 @@
 import pandas as pd
-import MySQLdb
+from services import connect
+
+cur = connect.cursor
 
 """ ACCOUNT MANAGEMENT """
 # Add an account with starting $ for a user
