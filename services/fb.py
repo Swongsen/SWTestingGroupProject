@@ -1,40 +1,44 @@
-import mysql.connector
-from main import getLatestPrice
+import connect
+from aapl import getLatestPrice
 from datetime import datetime
 import json
 
-facebookdb = mysql.connector.connect(host="remotemysql.com", port=3306, user="EIsUYT2e02", passwd="pxpKuKcuE9", database="EIsUYT2e02")
-facebookcursor = facebookdb.cursor(buffered=True)
+fbdb = connect.db
+fbcursor = connect.cursor
 
-facebookcursor.execute("CREATE TABLE IF NOT EXISTS fb_user_stocks \
-                        (username VARCHAR(255), number_stocks INT, total_amount DOUBLE)") # stores each user's number of FB stocks and total value of them
-facebookcursor.execute("CREATE TABLE IF NOT EXISTS fb_user_trnsctns \
-                    (date VARCHAR(255), username VARCHAR(255), number_stocks INT, total_amount DOUBLE)") # stores every transaction of every user
+fbcursor.execute("CREATE DATABASE IF NOT EXISTS fb")
+fbcursor.execute("USE fb")
+
+fbcursor.execute("CREATE TABLE IF NOT EXISTS transactions(accountid INTEGER NOT NULL, amount INTEGER NOT NULL, price DOUBLE NOT NULL, created_at TEXT NOT NULL)")
+
+def fb_buy(account, amount):
+    #update facebook's transaction log
+    sql = "INSERT INTO transactions(accountid, amount, price, created_at) VALUES (%s, %s, %s, NOW())"
+    price = getLatestPrice("FB")
+    values = (account, amount, price)
+    fbcursor.execute(sql, values)
+    fbdb.commit()
+
+    #update accounts database
+    fbcursor.execute("USE accounts")
+    sql = "SELECT funds, fb FROM accounts WHERE accountid = %s"
+    values = (account, )
+    fbcursor.execute(sql, values)
+
+    #subtract funds from account, add stocks to account
+    total_funds = float(fbcursor.fetchone()[0])
+    total_stocks = int(fbcursor.fetchone()[1])
+    funds_left = total_funds - (price * amount)
+    stocks_left = total_stocks + amount
+    sql = "UPDATE accounts SET funds = %s AND fb = %s WHERE accountid = %s"
+    values = (funds_left, stocks_left, account)
+    fbcursor.execute(sql, values)
 
 
-def modify_user_stocks(user, number_of_stocks): # method used to buy/sell shares, use negative number for number_of_stocks when selling
-    sql = "SELECT * FROM fb_user_stocks WHERE username = %s"
-    value = (user, )
-    facebookcursor.execute(sql, value)
-    result = facebookcursor.fetchall()
 
-    if len(result) == 0: # if user doesn't exist in database
-        sql = "INSERT INTO fb_user_stocks (username, number_stocks, total_amount) VALUES (%s, %s, %s)"
-        amount_stocks = 5000 + int(number_of_stocks)
-        total_amount = amount_stocks * getLatestPrice("FB")
-        values = (user, amount_stocks, total_amount)
-        facebookcursor.execute(sql, values)
-        facebookdb.commit()
-    
-    else:
-        sql = "UPDATE fb_user_stocks SET number_stocks = %s AND total_amount = %s WHERE username = %s"
-        new_amount = int(number_of_stocks) + result[0][1]
-        total_amount = result[0][2] + (int(number_of_stocks) * getLatestPrice("FB"))
-        values = (new_amount, total_amount, user)
-        facebookcursor.execute(sql, values)
-        facebookdb.commit()
 
-def make_transaction(user, number_of_stocks): # method used to update transaction database
+
+'''def make_transaction(user, number_of_stocks): # method used to update transaction database
     now = datetime.now()
     dt_string = str(now.strftime("%Y-%m-%d %H:%M:%S"))
     sql = "INSERT INTO fb_user_trnsctns (date, username, number_stocks, total_amount) VALUES (%s, %s, %s, %s)"
@@ -72,6 +76,6 @@ def display_stocks(user): # fetches number of stocks and total value of a specif
         final_arr.append(result[0][1])
         final_arr.append(result[0][2])
     
-    return final_arr
+    return final_arr'''
     
 
