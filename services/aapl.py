@@ -8,7 +8,6 @@ ticker="aapl"
 key = "A5dHAZqYNutmBOjIzppnWIsAwYw4"
 
 cur = connect.cursor
-
 # get latest price when given ticker using tradier's example code
 def getLatestPrice(key=key, ticker=ticker.upper()):
     # Request: Market Quotes (https://sandbox.tradier.com/v1/markets/quotes?symbols=spy)
@@ -54,3 +53,6 @@ def buy(session, amount):
     print("UPDATE accounts SET funds = {} AND {} = {} WHERE accountid = {}".format(funds_left, ticker, stocks_added, account))
     cur.execute("UPDATE accounts SET funds = {}, {} = {} WHERE accountid = {}".format(funds_left, ticker, stocks_added, account))
     return "Successfully bought {} stocks of aapl".format(amount)
+        raise Exception("Invalid")
+
+getLatestPrice()
