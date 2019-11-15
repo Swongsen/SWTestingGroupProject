@@ -53,9 +53,11 @@ def addAccount():
     if not session.get('logged_in'):
         return redirect("/login")
     else:
-        account_name = request.form["account"]
-        amount = request.form["amount"]
-        obs.addAccount(session["token"], amount)
+        if request.method == "POST":
+            account_name = request.form["account"]
+            amount = request.form["amount"]
+            obs.addAccount(session["token"], account_name, amount)
+            return render_template("/home.html")
         return render_template("addaccount.html")
 
 @webclient.route("/logs/authentication", methods=["GET"])
