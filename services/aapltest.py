@@ -2,7 +2,7 @@ import pytest
 import os
 import unittest
 from unittest.mock import Mock
-from aapl import getLatestPrice, buy
+from aapl import getLatestPrice, buy, sell
 
 # Test for getLatestPrice function
 def test_getLatestPrice():
@@ -17,7 +17,13 @@ def test_getLatestPrice():
 
 # Test for buy function
 def test_buy():
-    # Mock to assert that the buy function works and is called once 
+    # Mock to assert that the buy function works and is called once
     mock = Mock()
-    mock.buy()
-    mock.buy.assert_called_once()
+    mock.buy("logged_in", 1)
+    mock.buy.assert_called_once_with("logged_in", 1)
+
+# Test for sell function
+def test_sell():
+    mock = Mock()
+    mock.sell("logged_in", 1)
+    mock.sell.assert_called_once_with("logged_in", 1)
