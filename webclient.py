@@ -111,6 +111,17 @@ def buy(ticker, amount):
         message = aapl.buy(session, amount)
     return message
 
+@webclient.route("/sell/ticker=<ticker>&amount=<amount>")
+def sell(ticker, amount):
+    message = None
+    if ticker == "aapl":
+        message = aapl.sell(session, amount)
+    return message
+
+@webclient.route("/price/ticker=<ticker>")
+def getPrice(ticker, method=["GET"]):
+    if ticker == "aapl":
+        return str(aapl.getLatestPrice())
 
 @webclient.route("/checkfunds", methods=["GET"])
 def checkFunds():
