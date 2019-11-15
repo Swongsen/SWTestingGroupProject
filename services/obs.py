@@ -59,7 +59,7 @@ def viewAccounts():
     cur.execute("SELECT * FROM accounts")
     row_headers = [x[0] for x in cur.description]
     results = cur.fetchall()
-    json_data = []
+    data = []
     for result in results:
-        json_data.append(dict(zip(row_headers,result)))
-    return jsonify(json_data)
+        data.append(dict(zip(row_headers,result)))
+    return results

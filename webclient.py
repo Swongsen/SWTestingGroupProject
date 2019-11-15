@@ -45,7 +45,9 @@ def load():
     if not session.get('logged_in'):
         return redirect("/login")
     else:
-        return render_template("home.html")
+        accounts = obs.viewAccounts()
+        print(accounts)
+        return render_template("home.html", accounts=accounts)
 
 @webclient.route("/addaccount", methods=["GET", "POST"])
 def addAccount():
@@ -59,10 +61,9 @@ def addAccount():
             return render_template("/home.html")
         return render_template("addaccount.html")
 
-@webclient.route("/selectaccount/accountname=<accountname>")
-def selectAccount(accountname):
-    session["token"] = accountname
-    return "Selected "+accountname
+@webclient.route("/selectaccount/accountid=<accountid>")
+def selectAccount(accountid):
+    session["token"] = accountid
 
 @webclient.route("/logs/authentication", methods=["GET"])
 def viewAuthenticationLogs():
@@ -78,7 +79,7 @@ def viewStockTransactionLogs():
 
 @webclient.route("/accounts", methods=["GET"])
 def viewAccounts():
-    return obs.viewAccounts()
+    return jsonify(obs.viewAccounts())
 
 @webclient.route("/sellstocks", methods=["GET"])
 def sellStocks():
@@ -134,5 +135,6 @@ def checkFunds():
             obs.checkFunds(session["userid"], account_name, amount)
             return render_template("/home.html")
         return render_template("checkfunds.html")
+
 if __name__ == "__main__":
     webclient.run()
