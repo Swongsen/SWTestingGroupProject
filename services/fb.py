@@ -12,17 +12,21 @@ fbcursor.execute("USE fb")
 fbcursor.execute("CREATE TABLE IF NOT EXISTS transactions(accountid INTEGER NOT NULL, amount INTEGER NOT NULL, price DOUBLE NOT NULL, created_at TEXT NOT NULL)"
 
 def fb_buy(account, amount):
+
+    #update facebook's transaction log
     sql = "INSERT INTO transactions(accountid, amount, price, created_at) VALUES (%s, %s, %s, %s, NOW())"
     price = getLatestPrice("FB")
     values = (account, amount, price)
     fbcursor.execute(sql, values)
     fbdb.commit()
 
+    #update accounts database
     fbcursor.execute("USE accounts")
     sql = "SELECT funds, fb FROM accounts WHERE accountid = %s"
     values = (account, )
     fbcursor.execute(sql, values)
 
+    #subtract funds from account, add stocks to account
     total_funds = float(fbcursor.fetchone()[0])
     total_stocks = int(fbcursor.fetchone()[1])
     funds_left = total_funds - (price * amount)
