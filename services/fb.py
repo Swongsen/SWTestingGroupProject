@@ -9,7 +9,7 @@ fbcursor = connect.cursor
 fbcursor.execute("CREATE DATABASE IF NOT EXISTS fb")
 fbcursor.execute("USE fb")
 
-fbcursor.execute("CREATE TABLE IF NOT EXISTS transactions(accountid INTEGER NOT NULL, amount INTEGER NOT NULL, price DOUBLE NOT NULL, created_at TEXT NOT NULL)"
+fbcursor.execute("CREATE TABLE IF NOT EXISTS transactions(accountid INTEGER NOT NULL, amount INTEGER NOT NULL, price DOUBLE NOT NULL, created_at TEXT NOT NULL)")
 
 def fb_buy(account, amount):
     #update facebook's transaction log
