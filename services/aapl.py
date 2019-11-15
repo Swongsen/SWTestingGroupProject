@@ -52,6 +52,35 @@ def buy(session, amount):
     stocks_added = total_stocks + float(amount)
     print("UPDATE accounts SET funds = {} AND {} = {} WHERE accountid = {}".format(funds_left, ticker, stocks_added, account))
     cur.execute("UPDATE accounts SET funds = {}, {} = {} WHERE accountid = {}".format(funds_left, ticker, stocks_added, account))
-    return "Successfully bought {} stocks of aapl".format(amount)
+    return "Successfully bought {} stocks of {}".format(amount, ticker)
+
+def sell(session, amount):
+    # get accountid from accountname and userid
+    accountname = session["token"]
+    userid = session["userid"]
+    cur.execute("USE accounts")
+    cur.execute("SELECT accountid FROM accounts WHERE accountname = '{}' AND userid = {}".format(accountname, userid))
+    account = cur.fetchone()[0]
+
+    # log transaction
+    cur.execute("CREATE DATABASE IF NOT EXISTS {}".format(ticker))
+    cur.execute("USE {}".format(ticker))
+    price = getLatestPrice()
+    cur.execute("CREATE TABLE IF NOT EXISTS transactions(accountid INTEGER NOT NULL, type TEXT NOT NULL, amount INTEGER NOT NULL, price DOUBLE NOT NULL, created_at TEXT NOT NULL)")
+    cur.execute("INSERT INTO transactions(accountid, type, amount, price, created_at) VALUES ({}, 'buy', {}, {}, NOW())".format(account, amount, price))
+
+    #update accounts database
+    cur.execute("USE accounts")
+    cur.execute("SELECT funds, {} FROM accounts WHERE accountid = {}".format(ticker, account))
+    results = cur.fetchone()
+
+    #subtract funds from account, add stocks to account
+    total_funds = float(results[0])
+    total_stocks = int(results[1])
+    funds_left = total_funds + (price * float(amount))
+    stocks_added = total_stocks - float(amount)
+    print("UPDATE accounts SET funds = {} AND {} = {} WHERE accountid = {}".format(funds_left, ticker, stocks_added, account))
+    cur.execute("UPDATE accounts SET funds = {}, {} = {} WHERE accountid = {}".format(funds_left, ticker, stocks_added, account))
+    return "Successfully bought {} stocks of {}".format(amount, ticker)
 
 getLatestPrice()
