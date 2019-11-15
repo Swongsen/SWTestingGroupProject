@@ -4,7 +4,7 @@ import json
 from services import connect
 
 # Config values
-ticker="aapl"
+ticker="nflx"
 key = "A5dHAZqYNutmBOjIzppnWIsAwYw4"
 
 cur = connect.cursor
@@ -52,6 +52,6 @@ def buy(session, amount):
     stocks_added = total_stocks + float(amount)
     print("UPDATE accounts SET funds = {} AND {} = {} WHERE accountid = {}".format(funds_left, ticker, stocks_added, account))
     cur.execute("UPDATE accounts SET funds = {}, {} = {} WHERE accountid = {}".format(funds_left, ticker, stocks_added, account))
-    return "Successfully bought {} stocks of aapl".format(amount)
+    return "Successfully bought {} stocks of {}".format(amount, ticker)
 
 getLatestPrice()
