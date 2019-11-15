@@ -2,8 +2,7 @@ import pandas as pd
 import http.client
 import json
 from flask import jsonify
-# from services import connect
-import connect
+from services import connect
 
 # Config values
 ticker="amzn"
