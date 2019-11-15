@@ -1,7 +1,6 @@
 <html>
   <head>
   </head>
-
   <body bgcolor = "#FFE5DF">
 
     <center>
@@ -9,26 +8,28 @@
     </center>
 
     <center>
-    <grid>
-      <input type="button" value="Buy Stocks" color = "FFE5DF">
-      <input type="button" value="Sell Stocks">
-      <input type="button" value="Check Funds">
-      <input type="button" value="Add Accounts">
-    </grid>
+      <div class="collapse navbar-collapse" id="myNavbar">
+        <ul class="nav navbar-nav">
+          <a href='buystocks'>
+            <input type="button" value="Buy Stocks">
+          </a>
+          <a href='sellstocks'>
+            <input type="button" value="Sell Stocks">
+          </a>
+          <a href ='/checkfunds'>
+            <input type="button" value="Check Funds">
+          </a>
+          <a href='/addaccount'>
+            <input type="button" value="Add Account">
+          </a>
+        </ul>
+      </div>
     </center>
     
     <center>
       <a href='/login'>
         <input type="button" value="Sign Out">
       </a>
-
     </center>
-
-
-      <a href='/addaccount'>
-        <input type="button" value="Add Account">
-      </a>
-
   </body>
-
 </html>

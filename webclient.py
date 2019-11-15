@@ -53,7 +53,11 @@ def addAccount():
     if not session.get('logged_in'):
         return redirect("/login")
     else:
-        obs.addAccount(session["token"], 2000)
+        if request.method == "POST":
+            account_name = request.form["account"]
+            amount = request.form["amount"]
+            obs.addAccount(session["token"], account_name, amount)
+            return render_template("/home.html")
         return render_template("addaccount.html")
 
 @webclient.route("/logs/authentication", methods=["GET"])
@@ -72,5 +76,40 @@ def viewStockTransactionLogs():
 def viewAccounts():
     return obs.viewAccounts()
 
+@webclient.route("/sellstocks", methods=["GET"])
+def sellStocks():
+    if not session.get('logged_in'):
+        return redirect("/login")
+    else:
+        if request.method == "POST":
+            account_name = request.form["account"]
+            amount = request.form["amount"]
+            obs.sellStocks(session["token"], account_name, amount)
+            return render_template("/home.html")
+        return render_template("sellstocks.html")
+
+@webclient.route("/buystocks", methods=["GET"])
+def buystocks():
+    if not session.get('logged_in'):
+        return redirect("/login")
+    else:
+        if request.method == "POST":
+            account_name = request.form["account"]
+            amount = request.form["amount"]
+            obs.buyStocks(session["token"], account_name, amount)
+            return render_template("/home.html")
+        return render_template("buystocks.html")
+
+@webclient.route("/checkfunds", methods=["GET"])
+def checkFunds():
+    if not session.get('logged_in'):
+        return redirect("/login")
+    else:
+        if request.method == "POST":
+            account_name = request.form["account"]
+            amount = request.form["amount"]
+            obs.checkFunds(session["token"], account_name, amount)
+            return render_template("/home.html")
+        return render_template("checkfunds.html")
 if __name__ == "__main__":
     webclient.run()
