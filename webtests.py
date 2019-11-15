@@ -2,7 +2,7 @@ import pytest
 import os
 import unittest
 from unittest.mock import Mock
-from webclient import reroute, login, create, load
+from webclient import reroute, login, createUser, load
 
 
 # Testing that the reroute page ('/'), returns the response code for rerouting
@@ -17,10 +17,10 @@ def test_login():
     mock.login.assert_called()
 
 # Mock testing the createaccount page
-def test_create():
+def test_createUser():
     mock = Mock()
-    mock.create()
-    mock.create.assert_called()
+    mock.createUser()
+    mock.createUser.assert_called()
 
 # Mock testing the home page
 def test_load():
