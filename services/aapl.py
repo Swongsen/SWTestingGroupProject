@@ -3,6 +3,7 @@ import http.client
 import json
 from flask import jsonify
 from services import connect
+#import connect
 
 # Config values
 ticker="aapl"
@@ -90,3 +91,6 @@ def sell(amount, key):
     print("UPDATE accounts SET funds = {} AND {} = {} WHERE accountid = {}".format(funds_left, ticker, stocks_added, key))
     cur.execute("UPDATE accounts SET funds = {}, {} = {} WHERE accountid = {}".format(funds_left, ticker, stocks_added, key))
     return "Successfully bought {} stocks of {}".format(amount, ticker)
+
+
+getLatestPrice(0, "A5dHAZqYNutmBOjIzppnWIsAwYw4", "aapl")

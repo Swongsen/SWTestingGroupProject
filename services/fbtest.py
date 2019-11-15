@@ -12,8 +12,8 @@ def test_getLatestPrice():
 
     # Mock to assert that the function getLatestPrice is called once with the correct ticker and key
     mock = Mock()
-    mock.getLatestPrice("A5dHAZqYNutmBOjIzppnWIsAwYw4", "AAPL")
-    mock.getLatestPrice.assert_called_once_with("A5dHAZqYNutmBOjIzppnWIsAwYw4", "AAPL")
+    mock.getLatestPrice("A5dHAZqYNutmBOjIzppnWIsAwYw4", "FB")
+    mock.getLatestPrice.assert_called_once_with("A5dHAZqYNutmBOjIzppnWIsAwYw4", "FB")
 
 # Test for buy function
 def test_buy():

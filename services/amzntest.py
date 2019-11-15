@@ -8,12 +8,12 @@ from aapl import getLatestPrice, buy, sell
 def test_getLatestPrice():
     # Asserts an error when the parameters to getLatestPrice is wrong
     with pytest.raises(Exception):
-        assert getLatestPrice("sf", "fdd")
+        assert getLatestPrice("sf", "AdsNa")
 
     # Mock to assert that the function getLatestPrice is called once with the correct ticker and key
     mock = Mock()
-    mock.getLatestPrice("A5dHAZqYNutmBOjIzppnWIsAwYw4", "AAPL")
-    mock.getLatestPrice.assert_called_once_with("A5dHAZqYNutmBOjIzppnWIsAwYw4", "AAPL")
+    mock.getLatestPrice("A5dHAZqYNutmBOjIzppnWIsAwYw4", "AMZN")
+    mock.getLatestPrice.assert_called_once_with("A5dHAZqYNutmBOjIzppnWIsAwYw4", "AMZN")
 
 # Test for buy function
 def test_buy():

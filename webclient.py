@@ -110,6 +110,12 @@ def buy(ticker, amount, key):
     message = None
     if ticker == "aapl":
         message = aapl.buy(amount, key)
+    elif ticker == "fb":
+        message = fb.buy(amount, key)
+    elif ticker == "amzn":
+        message = amzn.buy(amount, key)
+    elif ticker == "nflx":
+        message = nflx.buy(amount, key)
     return jsonify(message)
 
 @webclient.route("/sell/ticker=<ticker>&amount=<amount>&key=<key>")
@@ -117,12 +123,24 @@ def sell(ticker, amount, key):
     message = None
     if ticker == "aapl":
         message = aapl.sell(amount, key)
+    elif ticker == "fb":
+        message = fb.sell(amount, key)
+    elif ticker == "amzn":
+        message = amzn.sell(amount, key)
+    elif ticker == "nflx":
+        message = nflx.sell(amount, key)
     return jsonify(message)
 
 @webclient.route("/price/ticker=<ticker>&key=<key>")
 def getPrice(ticker, key, method=["GET"]):
     if ticker == "aapl":
         return jsonify(aapl.getLatestPrice(key))
+    if ticker == "fb":
+        return jsonify(fb.getLatestPrice(key))
+    if ticker == "amzn":
+        return jsonify(amzn.getLatestPrice(key))
+    elif ticker == "nflx":
+        return jsonify(amzn.getLatestPrice(key))
 
 @webclient.route("/checkfunds", methods=["GET"])
 def checkFunds():
