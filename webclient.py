@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for, session
+from flask import Flask, render_template, request, redirect, url_for, session, jsonify
 import pandas as pd
 from auth import auth
 from services import monitoring, obs, aapl, fb, nflx, amzn
@@ -104,30 +104,24 @@ def buystocks():
             return render_template("/home.html")
         return render_template("buystocks.html")
 
-@webclient.route("/buy/ticker=<ticker>&amount=<amount>")
-def buy(ticker, amount):
+@webclient.route("/buy/ticker=<ticker>&amount=<amount>&key=<key>")
+def buy(ticker, amount, key):
     message = None
     if ticker == "aapl":
-        message = aapl.buy(session, amount)
-    elif ticker == "fb":
-        message = fb.buy(session, amount)
-    elif ticker == "amzn":
-        message = amzn.buy(session, amount)
-    elif ticker == "nflx":
-        message = nflx.buy(session, amount)
-    return message
+        message = aapl.buy(amount, key)
+    return jsonify(message)
 
-@webclient.route("/sell/ticker=<ticker>&amount=<amount>")
-def sell(ticker, amount):
+@webclient.route("/sell/ticker=<ticker>&amount=<amount>&key=<key>")
+def sell(ticker, amount, key):
     message = None
     if ticker == "aapl":
-        message = aapl.sell(session, amount)
-    return message
+        message = aapl.sell(amount, key)
+    return jsonify(message)
 
-@webclient.route("/price/ticker=<ticker>")
-def getPrice(ticker, method=["GET"]):
+@webclient.route("/price/ticker=<ticker>&key=<key>")
+def getPrice(ticker, key, method=["GET"]):
     if ticker == "aapl":
-        return str(aapl.getLatestPrice())
+        return jsonify(aapl.getLatestPrice(key))
 
 @webclient.route("/checkfunds", methods=["GET"])
 def checkFunds():
