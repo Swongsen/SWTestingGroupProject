@@ -9,11 +9,11 @@ fbcursor = connect.cursor
 fbcursor.execute("CREATE DATABASE IF NOT EXISTS fb")
 fbcursor.execute("USE fb")
 
-fbcursor.execute("CREATE TABLE IF NOT EXISTS transactions(accountid INTEGER NOT NULL, amount INTEGER NOT NULL, price DOUBLE NOT NULL, created_at TEXT NOT NULL)")
+fbcursor.execute("CREATE TABLE IF NOT EXISTS transactions(accountid INTEGER NOT NULL, type TEXT NOT NULL, amount INTEGER NOT NULL, price DOUBLE NOT NULL, created_at TEXT NOT NULL)")
 
 def fb_buy(account, amount):
     #update facebook's transaction log
-    sql = "INSERT INTO transactions(accountid, amount, price, created_at) VALUES (%s, %s, %s, NOW())"
+    sql = "INSERT INTO transactions(accountid, type, amount, price, created_at) VALUES (%s, \"buy\", %s, %s, NOW())"
     price = getLatestPrice("FB")
     values = (account, amount, price)
     fbcursor.execute(sql, values)
@@ -29,10 +29,36 @@ def fb_buy(account, amount):
     total_funds = float(fbcursor.fetchone()[0])
     total_stocks = int(fbcursor.fetchone()[1])
     funds_left = total_funds - (price * amount)
-    stocks_left = total_stocks + amount
+    stocks_added = total_stocks + amount
     sql = "UPDATE accounts SET funds = %s AND fb = %s WHERE accountid = %s"
-    values = (funds_left, stocks_left, account)
+    values = (funds_left, stocks_added, account)
     fbcursor.execute(sql, values)
+    fbdb.commit()
+
+def fb_sell(account, amount):
+    #update facebook's transaction log
+    sql = "INSERT INTO transactions(accountid, type, amount, price, created_at) VALUES (%s, \"sell\", %s, %s, NOW())"
+    price = getLatestPrice("FB")
+    values = (account, amount, price)
+    fbcursor.execute(sql, values)
+    fbdb.commit()
+
+    #update accounts database
+    fbcursor.execute("USE accounts")
+    sql = "SELECT funds, fb FROM accounts WHERE accountid = %s"
+    values = (account, )
+    fbcursor.execute(sql, values)
+
+    #add funds to account, subtract stocks from account
+    total_funds = float(fbcursor.fetchone()[0])
+    total_stocks = int(fbcursor.fetchone()[1])
+    funds_added = total_funds + (price * amount)
+    stocks_left = total_stocks - amount
+    sql = "UPDATE accounts SET funds = %s AND fb = %s WHERE accountid = %s"
+    values = (funds_added, stocks_left, account)
+    fbcursor.execute(sql, values)
+    fbdb.commit()
+
 
 
 
