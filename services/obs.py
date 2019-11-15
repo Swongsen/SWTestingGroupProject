@@ -1,6 +1,7 @@
 import pandas as pd
 from flask import jsonify
 from services import connect
+#from services import aapl, fb, nflx, amzn
 
 cur = connect.cursor
 cur.execute("CREATE DATABASE IF NOT EXISTS accounts")
@@ -26,7 +27,20 @@ def addFunds(account):
 
 # Buy an amount of shares of a certain ticker for an account
 def buyShare(account, ticker, amount):
-    return 1
+    ticker = ticker.lower()
+    if ticker == "aapl":
+        #aapl.buyShare(account, amount)
+        return 1
+    elif ticker == "fb":
+        #fb.fb_buy(account, amount)
+        return 1
+    elif ticker == "nflx":
+        # <insert buy function>
+        return 1
+    elif ticker == "amzn":
+        # <insert buy function>
+        return 1
+
 
 # Sell an amount of shares of a certain ticker for an account
 def sellShare(account, ticker, amount):

@@ -7,7 +7,7 @@ user_data_path = os.path.dirname(os.path.abspath(__file__))+"\\users.csv"
 # logs a user in if authentication succeeds
 # returns a token and message if applicable
 def login(session, request):
-    token = None
+    userid = None
     message = None
 
     # Get the username and password from the request form
@@ -22,12 +22,12 @@ def login(session, request):
         if user == row["user"] and password == row["password"]:
             # Since there is match from users.csv, set the session to be logged in
             session["logged_in"] = True
-            token = row["id"]
+            userid = row["id"]
             break
         else:
             message = "Invalid Credentials"
 
-    return token, message
+    return userid, message
 
 # creates a user
 def createUser(session, request):

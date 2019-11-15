@@ -1,8 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for, session
 import pandas as pd
 from auth import auth
-from services import monitoring
-from services import obs
+from services import monitoring, obs, aapl
 
 webclient = Flask(__name__)
 webclient.secret_key = "secretkey"
@@ -21,11 +20,11 @@ def login():
 
     if request.method == "POST":
         # Use custom auth module to login
-        session["token"], message = auth.login(session, request)
+        session["userid"], message = auth.login(session, request)
 
         if session.get("logged_in"):
             # log, then redirect
-            monitoring.log("authentication", (session["token"], request.form["username"]))
+            monitoring.log("authentication", (session["userid"], request.form["username"]))
             return redirect("/home")
 
     # If not already redirected to /home, then redirect back to login and print the error message
@@ -56,9 +55,14 @@ def addAccount():
         if request.method == "POST":
             account_name = request.form["account"]
             amount = request.form["amount"]
-            obs.addAccount(session["token"], account_name, amount)
+            obs.addAccount(session["userid"], account_name, amount)
             return render_template("/home.html")
         return render_template("addaccount.html")
+
+@webclient.route("/selectaccount/accountname=<accountname>")
+def selectAccount(accountname):
+    session["token"] = accountname
+    return "Selected "+accountname
 
 @webclient.route("/logs/authentication", methods=["GET"])
 def viewAuthenticationLogs():
@@ -84,7 +88,7 @@ def sellStocks():
         if request.method == "POST":
             account_name = request.form["account"]
             amount = request.form["amount"]
-            obs.sellStocks(session["token"], account_name, amount)
+            obs.sellStocks(session["userid"], account_name, amount)
             return render_template("/home.html")
         return render_template("sellstocks.html")
 
@@ -96,9 +100,17 @@ def buystocks():
         if request.method == "POST":
             account_name = request.form["account"]
             amount = request.form["amount"]
-            obs.buyStocks(session["token"], account_name, amount)
+            obs.buyStocks(session["userid"], account_name, amount)
             return render_template("/home.html")
         return render_template("buystocks.html")
+
+@webclient.route("/buy/ticker=<ticker>&amount=<amount>")
+def buy(ticker, amount):
+    message = None
+    if ticker == "aapl":
+        message = aapl.buy(session, amount)
+    return message
+
 
 @webclient.route("/checkfunds", methods=["GET"])
 def checkFunds():
@@ -108,7 +120,7 @@ def checkFunds():
         if request.method == "POST":
             account_name = request.form["account"]
             amount = request.form["amount"]
-            obs.checkFunds(session["token"], account_name, amount)
+            obs.checkFunds(session["userid"], account_name, amount)
             return render_template("/home.html")
         return render_template("checkfunds.html")
 if __name__ == "__main__":
