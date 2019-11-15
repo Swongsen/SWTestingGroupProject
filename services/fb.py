@@ -12,9 +12,8 @@ fbcursor.execute("USE fb")
 fbcursor.execute("CREATE TABLE IF NOT EXISTS transactions(accountid INTEGER NOT NULL, amount INTEGER NOT NULL, price DOUBLE NOT NULL, created_at TEXT NOT NULL)"
 
 def fb_buy(account, amount):
-
     #update facebook's transaction log
-    sql = "INSERT INTO transactions(accountid, amount, price, created_at) VALUES (%s, %s, %s, %s, NOW())"
+    sql = "INSERT INTO transactions(accountid, amount, price, created_at) VALUES (%s, %s, %s, NOW())"
     price = getLatestPrice("FB")
     values = (account, amount, price)
     fbcursor.execute(sql, values)
