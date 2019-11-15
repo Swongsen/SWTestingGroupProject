@@ -5,9 +5,27 @@
 
     <center>
       <h1> Sell Stocks </h1>
-    </center>
-    
-    <center>
+
+    <form action="" method="POST">
+      <input type="text" placeholder="Account Name" name="account" value="{{
+        request.form.account }}">
+        <br>
+      <input type="text" placeholder="Ticker Name ie. AAPL" name="ticker" value="{{
+        request.form.ticker }}">
+        <br>
+      <input type="text" placeholder="Amount of Stocks" name="amount" value="{{
+        request.form.amount }}">
+        <br>
+
+        <input class="btn btn-default" type="submit" value="Sell">
+          <br>
+          <font color="Red">
+            {% if message %}
+              <p class="message"><strong>Message:</strong> {{ message }}
+            {% endif %}
+          </font>
+    </form>
+
       <a href='/home'>
         <input type="button" value="Back">
       </a>
