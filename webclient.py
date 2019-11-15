@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for, session, jsonify
 import pandas as pd
 from auth import auth
-from services import monitoring, obs, aapl
+from services import monitoring, obs, aapl, fb, nflx, amzn
 
 webclient = Flask(__name__)
 webclient.secret_key = "secretkey"

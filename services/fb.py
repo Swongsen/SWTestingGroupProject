@@ -1,107 +1,55 @@
-import connect
-from aapl import getLatestPrice
-from datetime import datetime
+import pandas as pd
+import http.client
 import json
+from services import connect
 
-fbdb = connect.db
-fbcursor = connect.cursor
+# Config values
+ticker="fb"
+key = "A5dHAZqYNutmBOjIzppnWIsAwYw4"
 
-fbcursor.execute("CREATE DATABASE IF NOT EXISTS fb")
-fbcursor.execute("USE fb")
+cur = connect.cursor
+# get latest price when given ticker using tradier's example code
+def getLatestPrice(key=key, ticker=ticker.upper()):
+    # Request: Market Quotes (https://sandbox.tradier.com/v1/markets/quotes?symbols=spy)
+    connection = http.client.HTTPSConnection('sandbox.tradier.com', 443, timeout = 30)
+    # Headers
+    headers = {"Accept":"application/json", "Authorization":"Bearer "+key}
+    # Send synchronously
+    connection.request('GET', '/v1/markets/quotes?symbols={}'.format(ticker), None, headers)
+    try:
+        response = connection.getresponse()
+        content = response.read()
+        # Success
+        return json.loads(content)["quotes"]["quote"]["last"]
+    except http.client.HTTPException:
+        # Exception
+        print('Exception during request')
 
-fbcursor.execute("CREATE TABLE IF NOT EXISTS transactions(accountid INTEGER NOT NULL, type TEXT NOT NULL, amount INTEGER NOT NULL, price DOUBLE NOT NULL, created_at TEXT NOT NULL)")
+def buy(session, amount):
+    # get accountid from accountname and userid
+    accountname = session["token"]
+    userid = session["userid"]
+    cur.execute("USE accounts")
+    cur.execute("SELECT accountid FROM accounts WHERE accountname = '{}' AND userid = {}".format(accountname, userid))
+    account = cur.fetchone()[0]
 
-def fb_buy(account, amount):
-    #update facebook's transaction log
-    sql = "INSERT INTO transactions(accountid, type, amount, price, created_at) VALUES (%s, \"buy\", %s, %s, NOW())"
-    price = getLatestPrice("FB")
-    values = (account, amount, price)
-    fbcursor.execute(sql, values)
-    fbdb.commit()
+    # log transaction
+    cur.execute("CREATE DATABASE IF NOT EXISTS {}".format(ticker))
+    cur.execute("USE {}".format(ticker))
+    price = getLatestPrice()
+    cur.execute("CREATE TABLE IF NOT EXISTS transactions(accountid INTEGER NOT NULL, type TEXT NOT NULL, amount INTEGER NOT NULL, price DOUBLE NOT NULL, created_at TEXT NOT NULL)")
+    cur.execute("INSERT INTO transactions(accountid, type, amount, price, created_at) VALUES ({}, 'buy', {}, {}, NOW())".format(account, amount, price))
 
     #update accounts database
-    fbcursor.execute("USE accounts")
-    sql = "SELECT funds, fb FROM accounts WHERE accountid = %s"
-    values = (account, )
-    fbcursor.execute(sql, values)
-
+    cur.execute("USE accounts")
+    cur.execute("SELECT funds, {} FROM accounts WHERE accountid = {}".format(ticker, account))
+    results = cur.fetchone()
+    
     #subtract funds from account, add stocks to account
-    total_funds = float(fbcursor.fetchone()[0])
-    total_stocks = int(fbcursor.fetchone()[1])
-    funds_left = total_funds - (price * amount)
-    stocks_added = total_stocks + amount
-    sql = "UPDATE accounts SET funds = %s AND fb = %s WHERE accountid = %s"
-    values = (funds_left, stocks_added, account)
-    fbcursor.execute(sql, values)
-    fbdb.commit()
-
-def fb_sell(account, amount):
-    #update facebook's transaction log
-    sql = "INSERT INTO transactions(accountid, type, amount, price, created_at) VALUES (%s, \"sell\", %s, %s, NOW())"
-    price = getLatestPrice("FB")
-    values = (account, amount, price)
-    fbcursor.execute(sql, values)
-    fbdb.commit()
-
-    #update accounts database
-    fbcursor.execute("USE accounts")
-    sql = "SELECT funds, fb FROM accounts WHERE accountid = %s"
-    values = (account, )
-    fbcursor.execute(sql, values)
-
-    #add funds to account, subtract stocks from account
-    total_funds = float(fbcursor.fetchone()[0])
-    total_stocks = int(fbcursor.fetchone()[1])
-    funds_added = total_funds + (price * amount)
-    stocks_left = total_stocks - amount
-    sql = "UPDATE accounts SET funds = %s AND fb = %s WHERE accountid = %s"
-    values = (funds_added, stocks_left, account)
-    fbcursor.execute(sql, values)
-    fbdb.commit()
-
-
-
-
-
-
-'''def make_transaction(user, number_of_stocks): # method used to update transaction database
-    now = datetime.now()
-    dt_string = str(now.strftime("%Y-%m-%d %H:%M:%S"))
-    sql = "INSERT INTO fb_user_trnsctns (date, username, number_stocks, total_amount) VALUES (%s, %s, %s, %s)"
-    final_amount = int(number_of_stocks) * getLatestPrice("FB")
-    values = (dt_string, user, number_of_stocks, final_amount)
-    facebookcursor.execute(sql, values)
-    facebookdb.commit()
-
-def display_transactions(user): # returns a json object of all transactions
-    sql = "SELECT * FROM fb_user_trnsctns WHERE username = %s"
-    value = (user, )
-    facebookcursor.execute(sql, value)
-    row_headers = [x[0] for x in facebookcursor.description]
-    result = facebookcursor.fetchall()
-
-    if len(result) == 0:
-        return "No transactions for this user"
-    else:
-        json_data = []
-        for r in result:
-            json_data.append(dict(zip(row_headers, r)))
-        return json.dumps(json_data, indent=4, sort_keys=True, default=str)
-
-def display_stocks(user): # fetches number of stocks and total value of a specific user
-    sql = "SELECT * FROM fb_user_stocks WHERE username = %s"
-    value = (user, )
-    facebookcursor.execute(sql, value)
-    result = facebookcursor.fetchall()
-
-    final_arr = [] # array of 2 values, one is number of stocks, other is total value
-    if len(result) == 0:
-        final_arr.append(5000)
-        final_arr.append(5000 * getLatestPrice("FB"))
-    else:
-        final_arr.append(result[0][1])
-        final_arr.append(result[0][2])
-    
-    return final_arr'''
-    
-
+    total_funds = float(results[0])
+    total_stocks = int(results[1])
+    funds_left = total_funds - (price * float(amount))
+    stocks_added = total_stocks + float(amount)
+    print("UPDATE accounts SET funds = {} AND {} = {} WHERE accountid = {}".format(funds_left, ticker, stocks_added, account))
+    cur.execute("UPDATE accounts SET funds = {}, {} = {} WHERE accountid = {}".format(funds_left, ticker, stocks_added, account))
+    return "Successfully bought {} stocks of {}".format(amount, ticker)
