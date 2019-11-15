@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for, session
 import pandas as pd
 from auth import auth
-from services import monitoring, obs, aapl
+from services import monitoring, obs, aapl, fb, nflx, amzn
 
 webclient = Flask(__name__)
 webclient.secret_key = "secretkey"
@@ -109,6 +109,12 @@ def buy(ticker, amount):
     message = None
     if ticker == "aapl":
         message = aapl.buy(session, amount)
+    elif ticker == "fb":
+        message = fb.buy(session, amount)
+    elif ticker == "amzn":
+        message = amzn.buy(session, amount)
+    elif ticker == "nflx":
+        message = nflx.buy(session, amount)
     return message
 
 @webclient.route("/sell/ticker=<ticker>&amount=<amount>")
