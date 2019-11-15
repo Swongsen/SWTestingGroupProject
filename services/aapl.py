@@ -1,7 +1,7 @@
 import pandas as pd
 import http.client
 import json
-from services import connect
+import connect
 
 # Config values
 ticker="AAPL"
