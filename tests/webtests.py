@@ -2,8 +2,8 @@ import pytest
 import os
 import unittest
 from unittest.mock import Mock
-from webclient import reroute, login, createUser, load
-
+#from ..webclient import reroute, login, createUser, load
+from webclient import webclient
 
 # Testing that the reroute page ('/'), returns the response code for rerouting
 def test_reroute():
