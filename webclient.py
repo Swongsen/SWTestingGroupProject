@@ -58,7 +58,7 @@ def addAccount():
             account_name = request.form["account"]
             amount = request.form["amount"]
             obs.addAccount(session["userid"], account_name, amount)
-            return render_template("/home.html")
+            return redirect("/home.html")
         return render_template("addaccount.html")
 
 @webclient.route("/selectaccount/accountid=<accountid>", defaults={"accountname": None})
@@ -75,29 +75,12 @@ def viewAccounts():
 
 @webclient.route("/buy/ticker=<ticker>&amount=<amount>&key=<key>")
 def buy(ticker, amount, key):
-    message = None
-    if ticker == "aapl":
-        message = aapl.buy(amount, key)
-    elif ticker == "fb":
-        message = fb.buy(amount, key)
-    elif ticker == "amzn":
-        message = amzn.buy(amount, key)
-    elif ticker == "nflx":
-        message = nflx.buy(amount, key)
+    obs.buyShares(key, ticker, amount)
     return redirect("/home")
 
 @webclient.route("/sell/ticker=<ticker>&amount=<amount>&key=<key>")
 def sell(ticker, amount, key):
-    message = None
-    if ticker == "aapl":
-        message = aapl.sell(amount, key)
-    elif ticker == "fb":
-        message = fb.sell(amount, key)
-    elif ticker == "amzn":
-        message = amzn.sell(amount, key)
-    elif ticker == "nflx":
-        message = nflx.sell(amount, key)
-    #return jsonify(message)
+    obs.sellShares(key, ticker, amount)
     return redirect("/home")
 
 @webclient.route("/price/ticker=<ticker>&key=<key>")
@@ -148,10 +131,14 @@ def addFunds():
 
 @webclient.route("/logs/authentication", methods=["GET"])
 def viewAuthenticationLogs():
+    if not session.get('logged_in'):
+        return redirect("/login")
     return monitoring.viewAuthenticationLogs()
 
 @webclient.route("/logs/transaction", methods=["GET"])
 def viewTransactionLogs():
+    if not session.get('logged_in'):
+        return redirect("/login")
     if session["userid"] == 0:
         return monitoring.viewTransactionLogs()
     else:
@@ -159,6 +146,8 @@ def viewTransactionLogs():
 
 @webclient.route("/logs/stocktransaction/<ticker>", methods=["GET"])
 def viewStockTransactionLogs(ticker):
+    if not session.get('logged_in'):
+        return redirect("/login")
     return monitoring.viewStockTransactionLogs(ticker)
 
 if __name__ == "__main__":

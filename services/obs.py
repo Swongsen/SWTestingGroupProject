@@ -1,11 +1,13 @@
 import pandas as pd
 from flask import jsonify
 from services import connect
-#from services import aapl, fb, nflx, amzn
+from services import aapl, fb, nflx, amzn
 
 cur = connect.cursor
 cur.execute("CREATE DATABASE IF NOT EXISTS accounts")
 cur.execute("USE accounts")
+
+# bank initialization at bottom
 
 """ ACCOUNT MANAGEMENT """
 # Add an account with starting $ for a user
@@ -31,25 +33,27 @@ def addFunds(accountid, added_funds):
     cur.execute("UPDATE accounts SET funds = {} WHERE accountid = {}".format(new_funds, accountid))  
 
 # Buy an amount of shares of a certain ticker for an account
-def buyShare(account, ticker, amount):
-    ticker = ticker.lower()
+def buyShares(account, ticker, amount):
     if ticker == "aapl":
-        #aapl.buyShare(account, amount)
-        return 1
+        aapl.buy(amount, account)
     elif ticker == "fb":
-        #fb.fb_buy(account, amount)
-        return 1
-    elif ticker == "nflx":
-        # <insert buy function>
-        return 1
+        fb.buy(amount, account)
     elif ticker == "amzn":
-        # <insert buy function>
-        return 1
+        amzn.buy(amount, account)
+    elif ticker == "nflx":
+        nflx.buy(amount, account)
 
 
 # Sell an amount of shares of a certain ticker for an account
-def sellShare(account, ticker, amount):
-    return 1
+def sellShares(account, ticker, amount):
+    if ticker == "aapl":
+        aapl.sell(amount, account)
+    elif ticker == "fb":
+        fb.sell(amount, account)
+    elif ticker == "amzn":
+        amzn.sell(amount, account)
+    elif ticker == "nflx":
+        nflx.sell(amount, account)
 
 """ NET WORTH """
 # Get total account balances and shares owned
@@ -67,3 +71,9 @@ def viewAccounts():
     for result in results:
         data.append(dict(zip(row_headers,result)))
     return data
+
+# start bank off
+if len(viewAccounts())==0:
+    addAccount(0, "Bank", 10000000)
+    for ticker in ("aapl", "amzn", "fb", "nflx"):
+        buyShares(0, ticker, 5000)
