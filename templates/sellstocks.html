@@ -5,30 +5,32 @@
 
     <center>
       <h1> Sell Stocks </h1>
-
-    <form action="" method="POST">
-      <input type="text" placeholder="Account Name" name="account" value="{{
-        request.form.account }}">
-        <br>
-      <input type="text" placeholder="Ticker Name ie. AAPL" name="ticker" value="{{
-        request.form.ticker }}">
-        <br>
-      <input type="text" placeholder="Amount of Stocks" name="amount" value="{{
-        request.form.amount }}">
-        <br>
-
-        <input class="btn btn-default" type="submit" value="Sell">
+    {% if session["accountid"] != null %}
+      <form action="" method="POST">
+        <select name="ticker">
+          {% for ticker in ["aapl", "amzn", "fb", "nflx"] %}
+          <option value="{{ ticker }}">{{ ticker }}</option>
+          {% endfor %}
+        </select>
           <br>
-          <font color="Red">
-            {% if message %}
-              <p class="message"><strong>Message:</strong> {{ message }}
-            {% endif %}
-          </font>
-    </form>
+        <input type="text" placeholder="Amount of Stocks" name="amount" value="{{
+          request.form.amount }}">
+          <br>
 
-      <a href='/home'>
-        <input type="button" value="Back">
-      </a>
+          <input class="btn btn-default" type="submit" value="Sell">
+            <br>
+            <font color="Red">
+              {% if message %}
+                <p class="message"><strong>Message:</strong> {{ message }}
+              {% endif %}
+            </font>
+      </form>
+    {% else %}
+      <p>No account selected. Please go back and create/select an account.</p>
+    {% endif %}
+    <a href='/home'>
+      <input type="button" value="Back">
+    </a>
     </center>
   </body>
 </html>

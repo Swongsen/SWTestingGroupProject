@@ -4,20 +4,14 @@
   <body bgcolor = "#FFE5DF">
 
     <center>
-      <h1> Buy Stocks </h1>
+      <h1> Add Funds </h1>
     {% if session["accountid"] != null %}
       <form action="" method="POST">
-        <select name="ticker">
-          {% for ticker in ["aapl", "amzn", "fb", "nflx"] %}
-          <option value="{{ ticker }}">{{ ticker }}</option>
-          {% endfor %}
-        </select>
-          <br>
-        <input type="text" placeholder="Amount of Stocks" name="amount" value="{{
-          request.form.amount }}">
+        <input type="text" placeholder="Amount of Money in $" name="money" value="{{
+          request.form.money }}">
           <br>
 
-          <input class="btn btn-default" type="submit" value="Buy">
+          <input class="btn btn-default" type="submit" value="Add Funds">
             <br>
             <font color="Red">
               {% if message %}

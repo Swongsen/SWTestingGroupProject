@@ -5,28 +5,30 @@
 
     <center>
       <h1> Welcome to the Online Banking System </h1>
-      <h2> Current Account </h2>
     </center>
 
-    <center>
-      <div id = "myNavBar">
-        <ul>
-          <a href='buystocks'>
-            <input type="button" value="Buy Stocks">
-          </a>
-          <a href='sellstocks'>
-            <input type="button" value="Sell Stocks">
-          </a>
-          <a href ='/checkfunds'>
-            <input type="button" value="Check Funds">
-          </a>
-          <a href='/addaccount'>
-            <input type="button" value="Add Account">
-          </a>
-        </ul>
-      </div>
-    </center>
-    
+    {% if session["accountid"] != null %}
+      <center>
+        <h2> Current Account: {{ session["accountname"] }} </h2>
+        <div id = "myNavBar">
+          <ul>
+            <a href='buystocks'>
+              <input type="button" value="Buy Stocks">
+            </a>
+            <a href='sellstocks'>
+              <input type="button" value="Sell Stocks">
+            </a>
+            <a href='addfunds'>
+                <input type="button" value="Add Funds">
+              </a>
+          </ul>
+        </div>
+      </center>
+    {% else %}
+      <center>
+      <p>Select an account to begin buying and selling stocks</p>
+      </center>
+    {% endif %}
     <center>
       <a href='/login'>
         <input type="button" value="Sign Out">
@@ -35,16 +37,46 @@
 
     <center>
       <h2> Accounts </h2>
-      <div id = "accountSection">
-        {% for account in accounts %}
-          <a href="/selectaccount/accountname={{account[2]}}"">
-            <input type="button" value={{account[2]}}>
-          </a>
-        {% endfor %}
-        {% if accounts == null %}
-          <p> No accounts created yet. Try adding an account! </p>
+      {% if num_accounts == 0 %}
+        <p> No accounts created yet. Try adding an account! </p>
+        <a href='/addaccount'>
+          <input type="button" value="Add Account">
+        </a>
+      {% else %}
+        <a href='/addaccount'>
+          <input type="button" value="Add Account">
+        </a>
+        <table style="width:50%; border:1px solid black">
+          <tr>
+            <th></th>
+            <th>Account Name</th>
+            <th>Funds</th>
+            <th>AAPL</th>
+            <th>AMZN</th>
+            <th>FB</th>
+            <th>NFLX</th>
+          </tr>
+          {% for account in accounts %}
+            {% if account["userid"] == session["userid"] %}
+              <tr>
+                <td>
+                    <a href="/selectaccount/accountid={{ account["accountid"] }}&accountname={{ account["accountname"] }}"">
+                      <!--<input type="button" value={{ "Name: {}Funds: {}AAPL: {}AMZN: {}FB: {}NFLX: {}".format(account["accountname"],account["funds"],account["aapl"],account["amzn"],account["fb"],account["nflx"]) }}>
+                      -->
+                      <input type="button" value="Select">
+                    </a>
+                </td>
+                <td>{{ account["accountname"] }}</td>
+                <td>{{ account["funds"] }}</td>
+                <td>{{ account["aapl"] }}</td>
+                <td>{{ account["amzn"] }}</td>
+                <td>{{ account["fb"] }}</td>
+                <td>{{ account["nflx"] }}</td>
+              </tr>
+            {% endif %}
+          {% endfor %}
+          </table>
         {% endif %}
-      </div>
     </center>
   </body>
 </html>

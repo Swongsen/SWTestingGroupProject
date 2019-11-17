@@ -10,6 +10,7 @@ cur.execute("USE accounts")
 """ ACCOUNT MANAGEMENT """
 # Add an account with starting $ for a user
 def addAccount(userID, accountname, starting_balance):
+    cur.execute("USE accounts")
     cur.execute("CREATE TABLE IF NOT EXISTS accounts(userid INTEGER NOT NULL, accountid INTEGER NOT NULL, accountname TEXT NOT NULL, funds DOUBLE NOT NULL, aapl INTEGER NOT NULL, fb INTEGER NOT NULL, nflx INTEGER NOT NULL, amzn INTEGER NOT NULL, created_at TEXT NOT NULL)")
     cur.execute("SELECT COUNT(*) FROM accounts")
     num_accounts = cur.fetchone()[0]
@@ -22,8 +23,12 @@ def viewAccountBalance(account):
 
 """ TRANSACTIONS """
 # Add money to a given account
-def addFunds(account):
-    return 1
+def addFunds(accountid, added_funds):
+    cur.execute("USE accounts")
+    cur.execute("SELECT funds FROM accounts WHERE accountid = {}".format(accountid))
+    current_funds = cur.fetchone()[0]
+    new_funds = float(current_funds) + float(added_funds)
+    cur.execute("UPDATE accounts SET funds = {} WHERE accountid = {}".format(new_funds, accountid))
 
 # Buy an amount of shares of a certain ticker for an account
 def buyShare(account, ticker, amount):
@@ -53,7 +58,6 @@ def netWorth(user):
 
 """ DEBUG """
 def viewAccounts():
-    cur.execute("CREATE DATABASE IF NOT EXISTS accounts")
     cur.execute("USE accounts")
     cur.execute("CREATE TABLE IF NOT EXISTS accounts(userid INTEGER NOT NULL, accountid INTEGER NOT NULL, accountname TEXT NOT NULL, funds DOUBLE NOT NULL, aapl INTEGER NOT NULL, fb INTEGER NOT NULL, nflx INTEGER NOT NULL, amzn INTEGER NOT NULL, created_at TEXT NOT NULL)")
     cur.execute("SELECT * FROM accounts")
@@ -62,4 +66,4 @@ def viewAccounts():
     data = []
     for result in results:
         data.append(dict(zip(row_headers,result)))
-    return results
+    return data
