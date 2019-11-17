@@ -5,7 +5,6 @@ from services import connect
 cur = connect.cursor
 cur.execute("CREATE DATABASE IF NOT EXISTS logs")
 cur.execute("USE logs")
-cur.execute("DROP TABLE transactions")
 cur.execute("CREATE TABLE IF NOT EXISTS transactions(userid INTEGER, accountid INTEGER, type TEXT, amount INTEGER, price DOUBLE, created_at TEXT NOT NULL)")
 cur.execute("CREATE TABLE IF NOT EXISTS authentication(userid INTEGER NOT NULL, username TEXT NOT NULL, created_at TEXT NOT NULL)")
         
