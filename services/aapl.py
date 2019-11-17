@@ -2,7 +2,7 @@ import pandas as pd
 import http.client
 import json
 from flask import jsonify
-from services import connect
+from services import connect, monitoring
 #import connect
 
 # Config values
@@ -59,7 +59,7 @@ def buy(amount, key):
     total_stocks = int(results[1])
     funds_left = total_funds - (price * float(amount))
     stocks_added = total_stocks + float(amount)
-    cur.execute("UPDATE accounts SET funds = {}, {} = {} WHERE accountid = {}".format(funds_left, ticker, stocks_added, key))
+    cur.execute("UPDATE accounts SET funds = {}, {} = {} WHERE accountid = {}".format(funds_left, ticker, stocks_added, key))  
     return "Successfully bought {} stocks of {}".format(amount, ticker)
 
 def sell(amount, key):

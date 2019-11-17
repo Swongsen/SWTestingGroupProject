@@ -28,7 +28,7 @@ def addFunds(accountid, added_funds):
     cur.execute("SELECT funds FROM accounts WHERE accountid = {}".format(accountid))
     current_funds = cur.fetchone()[0]
     new_funds = float(current_funds) + float(added_funds)
-    cur.execute("UPDATE accounts SET funds = {} WHERE accountid = {}".format(new_funds, accountid))
+    cur.execute("UPDATE accounts SET funds = {} WHERE accountid = {}".format(new_funds, accountid))  
 
 # Buy an amount of shares of a certain ticker for an account
 def buyShare(account, ticker, amount):

@@ -84,7 +84,6 @@ def buy(ticker, amount, key):
         message = amzn.buy(amount, key)
     elif ticker == "nflx":
         message = nflx.buy(amount, key)
-    #return jsonify(message)
     return redirect("/home")
 
 @webclient.route("/sell/ticker=<ticker>&amount=<amount>&key=<key>")
@@ -142,6 +141,8 @@ def addFunds():
         if request.method == "POST":
             money = request.form["money"]
             obs.addFunds(session["accountid"], money)
+            # information format = (ticker, userid, accountid, type, amount, price)
+            monitoring.log("transaction", (session["userid"], session["accountid"], "fund transfer", "NULL", money))
             return redirect("/home")
         return render_template("addfunds.html")
 
@@ -151,11 +152,14 @@ def viewAuthenticationLogs():
 
 @webclient.route("/logs/transaction", methods=["GET"])
 def viewTransactionLogs():
-    return monitoring.viewTransactionLogs()
+    if session["userid"] == 0:
+        return monitoring.viewTransactionLogs()
+    else:
+        return "This page is for admins only"
 
-@webclient.route("/logs/stocktransaction", methods=["GET"])
-def viewStockTransactionLogs():
-    return monitoring.viewStockTransactionLogs()
+@webclient.route("/logs/stocktransaction/<ticker>", methods=["GET"])
+def viewStockTransactionLogs(ticker):
+    return monitoring.viewStockTransactionLogs(ticker)
 
 if __name__ == "__main__":
     webclient.run()
