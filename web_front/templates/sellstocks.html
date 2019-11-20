@@ -1,0 +1,37 @@
+<html>
+  <head>
+    <link rel="stylesheet" type="text/css" href="assets/css/main.css">
+  </head>
+  <body bgcolor = "#FFE5DF">
+
+    <center>
+      <h1> Sell Stocks </h1>
+    {% if session["accountid"] != null %}
+      <form action="" method="POST">
+        <select name="ticker">
+          {% for ticker in ["aapl", "amzn", "fb", "nflx"] %}
+          <option value="{{ ticker }}">{{ ticker }}</option>
+          {% endfor %}
+        </select>
+          <br>
+        <input type="text" placeholder="Amount of Stocks" name="amount" value="{{
+          request.form.amount }}">
+          <br>
+
+          <input class="btn btn-default" type="submit" value="Sell">
+            <br>
+            <font color="Red">
+              {% if message %}
+                <p class="message"><strong>Message:</strong> {{ message }}
+              {% endif %}
+            </font>
+      </form>
+    {% else %}
+      <p>No account selected. Please go back and create/select an account.</p>
+    {% endif %}
+    <a href='/home'>
+      <input type="button" value="Back">
+    </a>
+    </center>
+  </body>
+</html>

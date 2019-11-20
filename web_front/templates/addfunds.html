@@ -1,0 +1,31 @@
+<html>
+  <head>
+    <link rel="stylesheet" type="text/css" href="assets/css/main.css">
+  </head>
+  <body bgcolor = "#FFE5DF">
+
+    <center>
+      <h1> Add Funds </h1>
+    {% if session["accountid"] != null %}
+      <form action="" method="POST">
+        <input type="text" placeholder="Amount of Money in $" name="money" value="{{
+          request.form.money }}">
+          <br>
+
+          <input class="btn btn-default" type="submit" value="Add Funds">
+            <br>
+            <font color="Red">
+              {% if message %}
+                <p class="message"><strong>Message:</strong> {{ message }}
+              {% endif %}
+            </font>
+      </form>
+    {% else %}
+      <p>No account selected. Please go back and create/select an account.</p>
+    {% endif %}
+    <a href='/home'>
+      <input type="button" value="Back">
+    </a>
+    </center>
+  </body>
+</html>

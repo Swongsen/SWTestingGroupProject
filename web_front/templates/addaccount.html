@@ -1,0 +1,29 @@
+<html>
+<head>
+  <link rel="stylesheet" type="text/css" href="assets/css/main.css">
+</head>
+  <body bgcolor = "#727070">
+  <center>
+  <h1> Add Account </h1>
+  <form action="" method="POST">
+    <input type="text" placeholder="Account Name" name="account" value="{{
+      request.form.account }}">
+      <br>
+      <input type="text" placeholder="Enter Amount" name="amount" value="{{
+        request.form.amount }}">
+        <br><br>
+        <input class="btn btn-default" type="submit" value="Create Account">
+        <br>
+        <font color="Red">
+          {% if message %}
+            <p class="message"><strong>Message:</strong> {{ message }}
+          {% endif %}
+        </font>
+  </form>
+  <br>
+  <a href='/home'>
+    <input type="button" value="Back">
+  </a>
+  </center>
+  </body>
+</html>

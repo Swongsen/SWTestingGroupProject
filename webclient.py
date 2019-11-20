@@ -3,7 +3,7 @@ import pandas as pd
 from auth import auth
 from services import monitoring, obs, aapl, fb, nflx, amzn
 
-webclient = Flask(__name__)
+webclient = Flask(__name__, static_url_path='', static_folder='web_front/static', template_folder='web_front/templates')
 webclient.secret_key = "secretkey"
 
 @webclient.route("/")
