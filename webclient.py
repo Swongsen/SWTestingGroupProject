@@ -58,7 +58,7 @@ def addAccount():
             account_name = request.form["account"]
             amount = request.form["amount"]
             obs.addAccount(session["userid"], account_name, amount)
-            return redirect("/home.html")
+            return redirect("/home")
         return render_template("addaccount.html")
 
 @webclient.route("/selectaccount/accountid=<accountid>", defaults={"accountname": None})
