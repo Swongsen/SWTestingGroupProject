@@ -389,7 +389,7 @@ textarea {
   outline: 0;
   padding: 0 1rem;
   text-decoration: none;
-  width: 100%; }
+  width: 50%; }
   input[type="text"]:invalid,
   input[type="password"]:invalid,
   input[type="email"]:invalid,
