@@ -54,6 +54,6 @@ def createUser(session, request):
     else:
         user_data = user_data.append({"user":user, "password": password}, ignore_index=True)
         user_data.to_csv(user_data_path, index_label = "id")
-        message = "Account successfully created"
+        message = "User successfully created"
 
     return message
