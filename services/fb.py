@@ -13,7 +13,7 @@ cur = connect.cursor
 cur.execute("CREATE DATABASE IF NOT EXISTS {}".format(ticker))
 cur.execute("USE {}".format(ticker))
 cur.execute("CREATE TABLE IF NOT EXISTS transactions(userid INTEGER, accountid INTEGER, type TEXT, amount INTEGER, price DOUBLE, created_at TEXT NOT NULL)")
-    
+
 # get latest price when given ticker using tradier's example code
 def getLatestPrice(key, tradier_key=tradier_key, ticker=ticker.upper()):
     key = int(key)
@@ -70,20 +70,20 @@ def trade(trade_type, amount, key):
     if int(bank_stock) < amount and key != 0 and trade_type=="buy":
         bank_stock = bank_stock + amount
         cur.execute("UPDATE accounts SET funds = {}, {} = {} WHERE accountid=0".format(bank_funds-price*float(amount), ticker, bank_stock+amount))
-    
+
     # update bank and client
     if trade_type == "buy":
         funds_left = total_funds - (price * float(amount))
         stocks_added = total_stocks + float(amount)
-        cur.execute("UPDATE accounts SET funds = {}, {} = {} WHERE accountid = {}".format(funds_left, ticker, stocks_added, key))  
+        cur.execute("UPDATE accounts SET funds = {}, {} = {} WHERE accountid = {}".format(funds_left, ticker, stocks_added, key))
         if key!=0:
             cur.execute("UPDATE accounts SET funds = {}, {} = {} WHERE accountid=0".format(bank_funds+price*float(amount), ticker, bank_stock-amount))
         return "Successfully bought {} stocks of {}".format(amount, ticker)
-    
+
     elif trade_type == "sell":
         funds_left = total_funds + (price * float(amount))
         stocks_added = total_stocks - float(amount)
-        cur.execute("UPDATE accounts SET funds = {}, {} = {} WHERE accountid = {}".format(funds_left, ticker, stocks_added, key))  
+        cur.execute("UPDATE accounts SET funds = {}, {} = {} WHERE accountid = {}".format(funds_left, ticker, stocks_added, key))
         if key!=0:
             cur.execute("UPDATE accounts SET funds = {}, {} = {} WHERE accountid=0".format(bank_funds-price*float(amount), ticker, bank_stock+amount))
         return "Successfully sold {} stocks of {}".format(amount, ticker)
@@ -94,4 +94,4 @@ def buy(amount, key):
 def sell(amount, key):
     trade("sell", amount, key)
 
-getLatestPrice(0, "A5dHAZqYNutmBOjIzppnWIsAwYw4", ticker)
+getLatestPrice(0, "A5dHAZqYNutmBOjIzppnWIsAwYw4", "fb")

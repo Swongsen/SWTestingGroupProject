@@ -47,21 +47,24 @@
         <a href='/addaccount'>
           <input type="button" value="Add Account">
         </a>
+        <br>
         <table style="width:50%; border:1px solid black">
           <tr>
             <th></th>
             <th>Account Name</th>
-            <th>Funds</th>
+            <th>$Funds</th>
             <th>AAPL</th>
             <th>AMZN</th>
             <th>FB</th>
             <th>NFLX</th>
+            <th>Total Value of Shares </th>
+            <th>Net Worth </th>
           </tr>
           {% for account in accounts %}
             {% if account["userid"] == session["userid"] %}
               <tr>
                 <td>
-                    <a href="/selectaccount/accountid={{ account["accountid"] }}&accountname={{ account["accountname"] }}"">
+                    <a href="/selectaccount/accountid={{ account["accountid"] }}&accountname={{ account["accountname"] }}">
                       <!--<input type="button" value={{ "Name: {}Funds: {}AAPL: {}AMZN: {}FB: {}NFLX: {}".format(account["accountname"],account["funds"],account["aapl"],account["amzn"],account["fb"],account["nflx"]) }}>
                       -->
                       <input type="button" value="Select">
@@ -78,6 +81,21 @@
           {% endfor %}
           </table>
         {% endif %}
+        <br>
+        <center> <h2> Stock Prices </h2> <center>
+        <table style="width:50%; border:1px solid black">
+          <tr>
+            <th> AAPL </th>
+            <th> AMZN </th>
+            <th> FB </th>
+            <th> NFLX </th>
+          </tr>
+          <tr>
+            <td> ${{aapl}} </td>
+            <td> ${{amzn}} </td>
+            <td> ${{fb}} </td>
+            <td> ${{nflx}} </td>
+        </table>
     </center>
   </body>
 </html>

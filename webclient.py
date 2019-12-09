@@ -13,7 +13,8 @@ def reroute():
 @webclient.route("/login", methods=["GET", "POST"])
 def login():
     message = None
-
+    test = fb.getLatestPrice(0, "A5dHAZqYNutmBOjIzppnWIsAwYw4", "fb")
+    print(test)
     # If a user is already logged in, log them out
     if(session.get("logged_in") == True):
         session.clear()
@@ -41,13 +42,19 @@ def createUser():
 
 @webclient.route("/home", methods=["GET", "POST"])
 def home():
+    # Gets the amount of money each stock is currently worth
+    aaplprice = aapl.getLatestPrice(0, "A5dHAZqYNutmBOjIzppnWIsAwYw4", "aapl")
+    amznprice = amzn.getLatestPrice(0, "A5dHAZqYNutmBOjIzppnWIsAwYw4", "amzn")
+    fbprice = fb.getLatestPrice(0, "A5dHAZqYNutmBOjIzppnWIsAwYw4", "fb")
+    nflxprice = nflx.getLatestPrice(0, "A5dHAZqYNutmBOjIzppnWIsAwYw4", "nflx")
+
     # If not logged in, redirect back to login page
     if not session.get('logged_in'):
         return redirect("/login")
     else:
         accounts = obs.viewAccounts()
         num_accounts = len([account["userid"] for account in accounts if account["userid"]==session["userid"]])
-        return render_template("home.html",session=session,accounts=accounts,num_accounts=num_accounts)
+        return render_template("home.html",session=session,accounts=accounts,num_accounts=num_accounts, aapl=aaplprice, amzn = amznprice, fb = fbprice, nflx = nflxprice)
 
 @webclient.route("/addaccount", methods=["GET", "POST"])
 def addAccount():
@@ -96,7 +103,7 @@ def getPrice(ticker, key, method=["GET"]):
 
 @webclient.route("/sellstocks", methods=["GET","POST"])
 def sellStocks():
-    if not session.get('logged_in'):
+     if not session.get('logged_in'):
         return redirect("/login")
     else:
         if request.method == "POST":
