@@ -47,12 +47,12 @@
         <a href='/addaccount'>
           <input type="button" value="Add Account">
         </a>
-        <br>
+        <br><br>
         <table style="width:50%; border:1px solid black">
           <tr>
             <th></th>
             <th>Account Name</th>
-            <th>$Funds</th>
+            <th>Funds ($)</th>
             <th>AAPL</th>
             <th>AMZN</th>
             <th>FB</th>
@@ -71,11 +71,13 @@
                     </a>
                 </td>
                 <td>{{ account["accountname"] }}</td>
-                <td>{{ account["funds"] }}</td>
-                <td>{{ account["aapl"] }}</td>
-                <td>{{ account["amzn"] }}</td>
-                <td>{{ account["fb"] }}</td>
-                <td>{{ account["nflx"] }}</td>
+                <td>${{ "{:,.2f}".format(account["funds"]) }}</td>
+                <td>${{ account["aapl"] }}</td>
+                <td>${{ account["amzn"] }}</td>
+                <td>${{ account["fb"] }}</td>
+                <td>${{ account["nflx"] }}</td>
+                <td>${{ "{:,.2f}".format(account["aapl"]*aapl + account["amzn"]*amzn + account["fb"]*fb + account["nflx"]*nflx) }} </td>
+                <td>${{ "{:,.2f}".format(account["aapl"]*aapl + account["amzn"]*amzn + account["fb"]*fb + account["nflx"]*nflx + account["funds"]) }} </td>
               </tr>
             {% endif %}
           {% endfor %}
@@ -91,10 +93,10 @@
             <th> NFLX </th>
           </tr>
           <tr>
-            <td> ${{aapl}} </td>
-            <td> ${{amzn}} </td>
-            <td> ${{fb}} </td>
-            <td> ${{nflx}} </td>
+            <td> ${{"{:,.2f}".format(aapl)}} </td>
+            <td> ${{"{:,.2f}".format(amzn)}} </td>
+            <td> ${{"{:,.2f}".format(fb)}} </td>
+            <td> ${{"{:,.2f}".format(nflx)}} </td>
         </table>
     </center>
   </body>

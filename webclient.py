@@ -105,7 +105,7 @@ def getPrice(ticker, key, method=["GET"]):
 def sellStocks():
      if not session.get('logged_in'):
         return redirect("/login")
-    else:
+     else:
         if request.method == "POST":
             amount = request.form["amount"]
             ticker = request.form["ticker"]
