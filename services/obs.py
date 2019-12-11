@@ -14,6 +14,10 @@ cur.execute("USE accounts")
 def addAccount(userID, accountname, starting_balance):
     cur.execute("USE accounts")
     cur.execute("CREATE TABLE IF NOT EXISTS accounts(userid INTEGER NOT NULL, accountid INTEGER NOT NULL, accountname TEXT NOT NULL, funds DOUBLE NOT NULL, aapl INTEGER NOT NULL, fb INTEGER NOT NULL, nflx INTEGER NOT NULL, amzn INTEGER NOT NULL, created_at TEXT NOT NULL)")
+    cur.execute("SELECT COUNT(*) from accounts WHERE userid = {}".format(userID))
+    num_user_accounts = cur.fetchone()[0]
+    if num_user_accounts == 3:
+        return 0
     cur.execute("SELECT COUNT(*) FROM accounts")
     num_accounts = cur.fetchone()[0]
     cur.execute("INSERT INTO accounts(userid, accountid, accountname, funds, aapl, fb, nflx, amzn, created_at) VALUES ({},{},'{}',{},0,0,0,0,NOW())".format(userID,num_accounts,accountname,starting_balance))
