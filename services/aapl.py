@@ -74,6 +74,8 @@ def trade(trade_type, amount, key):
     # update bank and client
     if trade_type == "buy":
         funds_left = total_funds - (price * float(amount))
+        if funds_left < 0:
+            return "Not enough funds"
         stocks_added = total_stocks + float(amount)
         cur.execute("UPDATE accounts SET funds = {}, {} = {} WHERE accountid = {}".format(funds_left, ticker, stocks_added, key))  
         if key!=0:
@@ -83,6 +85,8 @@ def trade(trade_type, amount, key):
     elif trade_type == "sell":
         funds_left = total_funds + (price * float(amount))
         stocks_added = total_stocks - float(amount)
+        if stocks_added < 0:
+            return "Not enough stocks"
         cur.execute("UPDATE accounts SET funds = {}, {} = {} WHERE accountid = {}".format(funds_left, ticker, stocks_added, key))  
         if key!=0:
             cur.execute("UPDATE accounts SET funds = {}, {} = {} WHERE accountid=0".format(bank_funds-price*float(amount), ticker, bank_stock+amount))
