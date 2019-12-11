@@ -11,6 +11,7 @@ tradier_key = "A5dHAZqYNutmBOjIzppnWIsAwYw4"
 
 cur = connect.cursor
 cur.execute("CREATE DATABASE IF NOT EXISTS {}".format(ticker))
+cur.execute("CREATE DATABASE IF NOT EXISTS accounts")
 cur.execute("USE {}".format(ticker))
 cur.execute("CREATE TABLE IF NOT EXISTS transactions(userid INTEGER, accountid INTEGER, type TEXT, amount INTEGER, price DOUBLE, created_at TEXT NOT NULL)")
     
