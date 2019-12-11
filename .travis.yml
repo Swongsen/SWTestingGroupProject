@@ -13,6 +13,7 @@ jobs:
     - stage: "Linter"
       script: pylint main.py --exit-zero
     - stage: "Deploy" 
+      script: skip
       deploy:
         provider: heroku
         api_key: 1381e4af-5c53-44c4-b477-41c3e07f9e90
