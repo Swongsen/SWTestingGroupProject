@@ -76,7 +76,7 @@
                 <td>{{ "{:,}".format(account["aapl"]) }}</td>
                 <td>{{ "{:,}".format(account["amzn"]) }}</td>
                 <td>{{ "{:,}".format(account["fb"]) }}</td>
-                <td>{{ "{:,.2f}".format(account["nflx"]) }}</td>
+                <td>{{ "{:,}".format(account["nflx"]) }}</td>
                 <td>${{ "{:,.2f}".format(account["aapl"]*aapl + account["amzn"]*amzn + account["fb"]*fb + account["nflx"]*nflx) }} </td>
                 <td>${{ "{:,.2f}".format(account["aapl"]*aapl + account["amzn"]*amzn + account["fb"]*fb + account["nflx"]*nflx + account["funds"]) }} </td>
               </tr>
