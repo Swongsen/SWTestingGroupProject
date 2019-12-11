@@ -20,5 +20,4 @@ jobs:
         run:
           "heroku ps:scale web=1"
         app: 
-          master: team1obsproduction
-          staging: team1obsstaging
+          master: fa2019obs
