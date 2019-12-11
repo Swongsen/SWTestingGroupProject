@@ -30,11 +30,6 @@
       <p>Select an account to begin buying and selling stocks</p>
       </center>
     {% endif %}
-    <center>
-      <a href='/login'>
-        <input type="button" value="Sign Out">
-      </a>
-    </center>
 
     <center>
       <h2> Accounts </h2>
@@ -43,9 +38,15 @@
         <a href='/addaccount'>
           <input type="button" value="Add Account">
         </a>
+        <a href='/login'>
+          <input type="button" value="Sign Out">
+        </a>
       {% else %}
         <a href='/addaccount'>
           <input type="button" value="Add Account">
+        </a>
+        <a href='/login'>
+          <input type="button" value="Sign Out">
         </a>
         <br><br>
         <table style="width:50%; border:1px solid black">
@@ -84,7 +85,7 @@
           </table>
         {% endif %}
         <br>
-        <center> <h2> Stock Prices </h2> <center>
+        <center> <h2> Current Stock Prices </h2> <center>
         <table style="width:50%; border:1px solid black">
           <tr>
             <th> AAPL </th>
@@ -99,5 +100,32 @@
             <td> ${{"{:,.2f}".format(nflx)}} </td>
         </table>
     </center>
+
+    {% if useridglobal == 0 %}
+    <br>
+    <center>
+      <h2> Logs </h2>
+      <a href ='/logs/authentication'>
+        <input type="button" value="Authentication Logs">
+      </a>
+      <a href='/logs/transaction'>
+        <input type="button" value="Transaction Logs">
+      </a>
+        <br>
+      <a href='/logs/stocktransaction/aapl'>
+        <input type="button" value="AAPL Logs">
+      </a>
+      <a href='/logs/stocktransaction/amzn'>
+        <input type="button" value="AMZN Logs">
+      </a>
+      <a href='/logs/stocktransaction/fb'>
+        <input type="button" value="FB Logs">
+      </a>
+      <a href='/logs/stocktransaction/nflx'>
+        <input type="button" value="NFLX Logs">
+      </a>
+      <br><br><br>
+    </center>
+    {% endif %}
   </body>
 </html>
