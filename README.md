@@ -18,7 +18,7 @@ Team Members:
 	* mysql-connector-python
 	* flask
 	* pandas
-
+	* gunicorn
 ```bash
 pip install -r requirements.txt
 ```
