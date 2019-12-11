@@ -4,9 +4,10 @@ jobs:
   include:
     - stage: "Build"
       script: pip install -r requirements.txt
-    - stage: "Tests"                # naming the Tests stage
-      name: "Unit Tests"            # names the first Tests stage job
+    - stage: "Unit Tests"                # naming the Tests stage
       script: pytest unittests.py
+    - stage: "Cypress Acceptance Tests"
+      before-script: python webclient.py
+      script: ./node_modules/.bin/cypress run
     - stage: "Linter"
-      name: "Linting"
       script: pylint main.py --exit-zero
