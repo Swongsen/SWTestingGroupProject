@@ -2,7 +2,7 @@
 
 This project provides an online web interface for creating accounts that can buy and sell stocks. Each account can access the current value of their account, the current value of all stocks, and the quantity of stocks they own.  
   
-The bank has its own account from which stocks are sold to normal users. The bank account can view logs of all transactions.
+The bank has its own account from which stocks are sold to normal users. The bank account can view logs of all transactions. Use the admin account <admin,admin> to enter the bank account.
 
 Team Members:
 * Alain Garcia
