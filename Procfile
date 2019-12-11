@@ -1,1 +1,1 @@
-web: gunicorn webclient:app
+web: gunicorn webclient:webclient
