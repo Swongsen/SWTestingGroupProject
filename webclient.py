@@ -5,6 +5,8 @@ from services import monitoring, obs, aapl, fb, nflx, amzn
 
 webclient = Flask(__name__, static_url_path='', static_folder='web_front/static', template_folder='web_front/templates')
 webclient.secret_key = "secretkey"
+# Used to pass into the home page if user is admin
+useridglobal = ""
 
 @webclient.route("/")
 def reroute():
@@ -12,6 +14,7 @@ def reroute():
 
 @webclient.route("/login", methods=["GET", "POST"])
 def login():
+    global useridglobal
     message = None
     test = fb.getLatestPrice(0, "A5dHAZqYNutmBOjIzppnWIsAwYw4", "fb")
     print(test)
@@ -26,6 +29,7 @@ def login():
         if session.get("logged_in"):
             # log, then redirect
             monitoring.log("authentication", (session["userid"], request.form["username"]))
+            useridglobal = session["userid"]
             return redirect("/home")
 
     # If not already redirected to /home, then redirect back to login and print the error message
@@ -42,6 +46,7 @@ def createUser():
 
 @webclient.route("/home", methods=["GET", "POST"])
 def home():
+    global useridglobal
     # Gets the amount of money each stock is currently worth
     aaplprice = aapl.getLatestPrice(0, "A5dHAZqYNutmBOjIzppnWIsAwYw4", "aapl")
     amznprice = amzn.getLatestPrice(0, "A5dHAZqYNutmBOjIzppnWIsAwYw4", "amzn")
@@ -54,7 +59,7 @@ def home():
     else:
         accounts = obs.viewAccounts()
         num_accounts = len([account["userid"] for account in accounts if account["userid"]==session["userid"]])
-        return render_template("home.html",session=session,accounts=accounts,num_accounts=num_accounts, aapl=aaplprice, amzn = amznprice, fb = fbprice, nflx = nflxprice)
+        return render_template("home.html",session=session,accounts=accounts,num_accounts=num_accounts, aapl=aaplprice, amzn = amznprice, fb = fbprice, nflx = nflxprice, useridglobal = useridglobal)
 
 @webclient.route("/addaccount", methods=["GET", "POST"])
 def addAccount():
@@ -140,14 +145,19 @@ def addFunds():
 def viewAuthenticationLogs():
     if not session.get('logged_in'):
         return redirect("/login")
-    return monitoring.viewAuthenticationLogs()
+    if session["userid"] == 0:
+        logs = monitoring.viewAuthenticationLogs()
+        return render_template("authenticationlogs.html", logs=logs)
+    else:
+        return "This page is for admins only"
 
 @webclient.route("/logs/transaction", methods=["GET"])
 def viewTransactionLogs():
     if not session.get('logged_in'):
         return redirect("/login")
     if session["userid"] == 0:
-        return monitoring.viewTransactionLogs()
+        logs = monitoring.viewTransactionLogs()
+        return render_template("transactionlogs.html", logs=logs)
     else:
         return "This page is for admins only"
 
@@ -155,7 +165,18 @@ def viewTransactionLogs():
 def viewStockTransactionLogs(ticker):
     if not session.get('logged_in'):
         return redirect("/login")
-    return monitoring.viewStockTransactionLogs(ticker)
+    if session["userid"] == 0:
+        logs = monitoring.viewStockTransactionLogs(ticker)
+        if ticker == "aapl":
+            return render_template("aapl.html", logs=logs)
+        elif ticker == "amzn":
+            return render_template("amzn.html", logs=logs)
+        elif ticker == "fb":
+            return render_template("fb.html", logs=logs)
+        elif ticker == "nflx":
+            return render_template("nflx.html", logs=logs)
+    else:
+        return "This page is for admins only"
 
 if __name__ == "__main__":
     webclient.run()

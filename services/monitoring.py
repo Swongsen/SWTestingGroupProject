@@ -7,10 +7,10 @@ cur.execute("CREATE DATABASE IF NOT EXISTS logs")
 cur.execute("USE logs")
 cur.execute("CREATE TABLE IF NOT EXISTS transactions(userid INTEGER, accountid INTEGER, type TEXT, amount INTEGER, price DOUBLE, created_at TEXT NOT NULL)")
 cur.execute("CREATE TABLE IF NOT EXISTS authentication(userid INTEGER NOT NULL, username TEXT NOT NULL, created_at TEXT NOT NULL)")
-        
+
 
 # log function that should be able to log anything
-# type should be either: 
+# type should be either:
 # authentication, transaction, or stock transaction
 def log(table, info):
     # info format = (userid, username)
@@ -41,7 +41,7 @@ def viewAuthenticationLogs():
     json_data = []
     for result in results:
         json_data.append(dict(zip(row_headers,result)))
-    return jsonify(json_data)
+    return json_data
 
 def viewTransactionLogs():
     cur.execute("USE logs")
@@ -51,7 +51,7 @@ def viewTransactionLogs():
     json_data = []
     for result in results:
         json_data.append(dict(zip(row_headers,result)))
-    return jsonify(json_data)
+    return json_data
 
 def viewStockTransactionLogs(ticker):
     cur.execute("USE {}".format(ticker))
@@ -61,4 +61,4 @@ def viewStockTransactionLogs(ticker):
     json_data = []
     for result in results:
         json_data.append(dict(zip(row_headers,result)))
-    return jsonify(json_data)
+    return json_data
