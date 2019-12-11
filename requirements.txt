@@ -3,3 +3,4 @@ pylint
 mysql-connector-python
 flask
 pandas
+gunicorn
