@@ -61,6 +61,7 @@ def test_nflxprice():
     price = getLatestPrice(0, "A5dHAZqYNutmBOjIzppnWIsAwYw4", "nflx")
     assert type(price) is float
 
-#UNIT TEST
+
+
 if __name__ == "main":
     unittest.main()
