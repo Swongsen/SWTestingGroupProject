@@ -7,7 +7,8 @@ jobs:
     - stage: "Unit Tests"                # naming the Tests stage
       script: pytest unittests.py
     - stage: "Cypress Acceptance Tests"
-      before-script: chmod +x /node_modules/.bin/cypress && python webclient.py & 
-      script: ./node_modules/.bin/cypress run
+      before_script: chmod +x /node_modules/.bin/cypress
+      script: python webclient.py &
+      after_script: ./node_modules/.bin/cypress run
     - stage: "Linter"
       script: pylint main.py --exit-zero
