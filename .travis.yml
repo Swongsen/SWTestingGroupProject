@@ -16,4 +16,8 @@ jobs:
       deploy: &heroku
       provider: heroku
       api_key: 1381e4af-5c53-44c4-b477-41c3e07f9e90
-      app: team1obs
+      run:
+        "heroku ps:scale web=1"
+      app: 
+        master: team1obsproduction
+        staging: team1obsstaging
