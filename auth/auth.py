@@ -13,8 +13,11 @@ def login(session, request):
     # Get the username and password from the request form
     user = request.form["username"]
     password = request.form["password"]
-
-    user_data = pd.read_csv(user_data_path)
+    try: 
+        user_data = pd.read_csv(user_data_path)
+    except:
+        user_data_path = os.path.dirname(os.path.abspath(__file__))+"/users.csv"
+        user_data = pd.read_csv(user_data_path)
 
     # Reads the users csv to validate username password
     for index, row in user_data.iterrows():
