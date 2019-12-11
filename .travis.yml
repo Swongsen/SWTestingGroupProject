@@ -3,16 +3,10 @@ language: python
 jobs:
   include:
     - stage: "Build"
-      name: "Python Libraries"
-      script: pip install -r requirements.txt
-      name: "Cypress"
-      script: npm install cypress --save-dev
-    - stage: "Tests"                # naming the Tests stage
-      name: "Unit Tests"            # names the first Tests stage job
+      script: pip install -r requirements.txt && npm install cypress --save-dev
+    - stage: "Unit Tests"                # naming the Tests stage
       script: pytest unittests.py
-      name: "Cypress Acceptance Tests"
-      script: npm start & wait-on http://localhost:5000
-      script: cypress run
+    - stage: "Cypress Acceptance Tests"
+      script: python webclient.py & wait-on http://localhost:5000 && cypress run
     - stage: "Linter"
-      name: "Linting"
       script: pylint main.py --exit-zero
