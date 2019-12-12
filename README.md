@@ -12,6 +12,8 @@ Team Members:
 
 Deployed [here](http://fa2019obs.herokuapp.com/), thought it is less stable than the localhost build.
 
+[Swagger API Documentation](https://app.swaggerhub.com/apis/OBS-Team-1/OBS-APIs/1)
+
 Video for milestone 3 in the root directory and is named milestone3.mp4.
 
 ## Installation
@@ -49,6 +51,8 @@ Version Control: [Github](https://github.com/)
 MySQL Server Hosting: [Google Cloud](https://cloud.google.com/)
 
 Deployment: [Heroku](https://www.heroku.com/)
+
+API Documentation: [Swagger](https://swagger.io/docs/)
 
 
 ## Contributing
