@@ -8,7 +8,6 @@ db_password = "cis4930"
 
 """
 
-
 # Config values for production
 db_host = "34.74.182.197"
 db_user = "root"
