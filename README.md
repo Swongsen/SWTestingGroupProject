@@ -10,6 +10,8 @@ Team Members:
 * Spencer Wong
 * Abhi Kante
 
+Deployed [here](http://fa2019obs.herokuapp.com/), thought it is less stable than the localhost build.
+
 ## Installation
 * Install [Python 3.x](https://www.python.org/downloads/)
 * Use the `requirements.txt` file and package manager [pip](https://pip.pypa.io/en/stable/) to install the following Python 3 packages:
@@ -28,6 +30,17 @@ pip install -r requirements.txt
 ```bash
 python webclient.py
 ```
+
+## Setup Overview
+We used Python for this entire project. The `flask` library was used to set up the web service. We used MySQL databases hosted by Google Cloud to store the web application's data. We interface with those databases through the `mysql-connector-python` library. The `pandas` library was used very briefly for CSV handling. The `gunicorn` library was used for heroku integration.
+
+Testing was done with the help of the `pytest` library. Linting was done with the help of the `pylint` library. Authentication was completed by using a custom module which very simply checks for plain text user data.
+
+## Resources Used
+Continuous Integration Service: [Travis CI](https://travis-ci.com/)
+Version Control: [Github](https://github.com/)
+MySQL Server Hosting: [Google Cloud](https://cloud.google.com/)
+Deployment: [Heroku](https://www.heroku.com/)
 
 ## Contributing
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
