@@ -41,10 +41,15 @@ We used Python for this entire project. The `flask` library was used to set up t
 Testing was done with the help of the `pytest` library. Linting was done with the help of the `pylint` library. Authentication was completed by using a custom module which very simply checks for plain text user data.
 
 ## Resources Used
+
 Continuous Integration Service: [Travis CI](https://travis-ci.com/)
+
 Version Control: [Github](https://github.com/)
+
 MySQL Server Hosting: [Google Cloud](https://cloud.google.com/)
+
 Deployment: [Heroku](https://www.heroku.com/)
+
 
 ## Contributing
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
